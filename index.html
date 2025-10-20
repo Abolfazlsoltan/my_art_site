@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خانه | گنجینه فرهنگ و هنر</title>
+
+    <!-- فونت فارسی وزیرمتن -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #fdfaf7;
+            color: #222;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+        }
+
+        /* نوار بالا */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #7b4b27;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 40px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        header h1 {
+            font-size: 1.3em;
+            letter-spacing: 1px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ffe4b5;
+        }
+
+        /* بخش خوش‌آمد */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                        url('https://images.unsplash.com/photo-1530023367847-a683933f4172') no-repeat center/cover;
+            height: 90vh;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 2.8em;
+            animation: fadeInDown 1s ease forwards;
+        }
+
+        .hero p {
+            margin-top: 15px;
+            font-size: 1.2em;
+            animation: fadeInUp 1.5s ease forwards;
+        }
+
+        .hero button {
+            margin-top: 25px;
+            padding: 12px 25px;
+            background: #ffe4b5;
+            border: none;
+            border-radius: 8px;
+            color: #5b361a;
+            font-size: 1em;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .hero button:hover {
+            background: #fff2d9;
+            transform: scale(1.05);
+        }
+
+        /* انیمیشن‌ها */
+        @keyframes fadeInDown {
+            from {opacity: 0; transform: translateY(-20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        @keyframes fadeInUp {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        /* بخش‌ها */
+        section {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        section h2 {
+            color: #7b4b27;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+
+        section h2::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background-color: #7b4b27;
+        }
+
+        section p {
+            max-width: 700px;
+            margin: auto;
+            color: #444;
+        }
+
+        /* کارت‌ها */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+            padding: 0 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: #7b4b27;
+            margin-bottom: 10px;
+        }
+
+        /* پاورقی */
+        footer {
+            background-color: #5b361a;
+            color: white;
+            text-align: center;
+            padding: 30px 10px;
+            margin-top: 60px;
+        }
+
+        footer .social {
+            margin-bottom: 15px;
+        }
+
+        footer a {
+            color: #ffe4b5;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav {
+                margin-top: 10px;
+            }
+
+            .hero h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- هدر -->
+    <header>
+        <h1>گنجینه فرهنگ و هنر</h1>
+        <nav>
+            <a href="#">خانه</a>
+            <a href="#about">درباره</a>
+            <a href="#gallery">گالری</a>
+            <a href="#contact">تماس</a>
+        </nav>
+    </header>
+
+    <!-- بخش خوش‌آمد -->
+    <div class="hero">
+        <h1>به دنیای فرهنگ و هنر خوش آمدید</h1>
+        <p>اینجا جایی است که زیبایی در هر واژه، رنگ و نغمه زنده می‌شود.</p>
+        <button>ورود به گالری</button>
+    </div>
+
+    <!-- درباره ما -->
+    <section id="about">
+        <h2>درباره ما</h2>
+        <p>در گنجینه فرهنگ و هنر، ما باور داریم که فرهنگ، زبان مشترک دل‌های انسان‌هاست. 
+        هدف ما بازتاب زیبایی‌های هنر و اندیشه ایرانی در دنیای دیجیتال است.</p>
+    </section>
+
+    <!-- گالری -->
+    <section id="gallery">
+        <h2>بخش‌های ویژه</h2>
+        <div class="cards">
+            <div class="card">
+                <h3>شعر و ادبیات</h3>
+                <p>واژه‌ها پنجره‌هایی به سوی احساس‌اند. هر شعر، دنیایی از درون شاعر.</p>
+            </div>
+            <div class="card">
+                <h3>نقاشی و طراحی</h3>
+                <p>هر رنگ روایتگر احساسی است. اینجا رنگ‌ها سخن می‌گویند.</p>
+            </div>
+            <div class="card">
+                <h3>موسیقی و صدا</h3>
+                <p>نغمه‌ها پل میان روح و طبیعت‌اند. گوش کن، شاید صدای دل خودت را بشنوی.</p>
+            </div>
+            <div class="card">
+                <h3>عکاسی</h3>
+                <p>هر تصویر لحظه‌ای از جاودانگی را در قاب زمان ثبت می‌کند.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- تماس -->
+    <section id="contact">
+        <h2>تماس با ما</h2>
+        <p>برای همکاری یا ارسال آثار خود، از طریق شبکه‌های زیر با ما در ارتباط باشید:</p>
+    </section>
+
+    <!-- پاورقی -->
+    <footer>
+        <div class="social">
+            <a href="#">Instagram</a> |
+            <a href="#">Telegram</a> |
+            <a href="#">Email</a>
+        </div>
+        <p>© 2025 گنجینه فرهنگ و هنر - تمامی حقوق محفوظ است.</p>
+    </footer>
+
+</body>
+</html>
