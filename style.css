@@ -1,818 +1,414 @@
 /*
 ==================================================
-  CSS Reset, Variables and Base Styles
-  - استفاده از متغیرها برای تم‌بندی و نگهداری آسان‌تر
+  گنجینه فرهنگ و هنر - فایل Style.css
+  بازنویسی شده برای ظاهر مدرن، شاداب‌تر و واکنش‌گرایی کامل
 ==================================================
 */
 
-/* متغیرهای رنگی و فونت (حالت روشن) */
-:root {
-    --font-primary: 'Vazirmatn', sans-serif;
-    --color-white: #ffffff;
-    --color-black: #1a1a1a;
-    
-    --bg-primary: #fdfaf7; /* بژ خیلی روشن */
-    --bg-secondary: #ffffff; /* پس‌زمینه کارت‌ها و ماژول‌ها */
-    --text-primary: #222; /* متن اصلی تیره */
-    --text-secondary: #444; /* متن توضیحات */
-    --color-main: #7b4b27; /* قهوه‌ای تیره (رنگ اصلی) */
-    --color-accent: #b58d6f; /* بژ طلایی (رنگ ثانویه) */
-    --color-success: #4CAF50;
-    --color-error: #d9534f;
-    
-    --shadow-light: rgba(0,0,0,0.1);
-    --shadow-medium: rgba(0,0,0,0.25);
-    
-    --header-height: 70px;
-    --transition-speed: 0.3s;
-    --progress-bar-height: 4px;
-}
+/* --------------------------------------------------
+  ۱. CSS Reset و متغیرهای اصلی (پالت رنگی شاداب)
+  -------------------------------------------------- */
 
-/* حالت تاریک */
-.dark-mode {
-    --bg-primary: #121212;
-    --bg-secondary: #1e1e1e;
-    --text-primary: #e0e0e0;
-    --text-secondary: #b0b0b0;
-    --color-main: #9d775c; /* قهوه‌ای روشن‌تر برای تاریک */
-    --color-accent: #b58d6f;
-    --color-black: #e0e0e0; /* برای آیکون‌های تیره */
-    
-    --shadow-light: rgba(255,255,255,0.05);
-    --shadow-medium: rgba(255,255,255,0.15);
-}
-
-/* -------------------- Reset & Base -------------------- */
 *, *::before, *::after {
-    box-sizing: border-box;
+    /* **حل مشکل اصلی نامتوازن بودن صفحه:** اطمینان از اینکه padding و border در عرض و ارتفاع المان حساب شود. */
+    box-sizing: border-box; 
     margin: 0;
     padding: 0;
 }
 
+:root {
+    /* **فونت:** استفاده از فونت استاندارد با وزن‌های دقیق */
+    --font-primary: 'Vazirmatn', Tahoma, sans-serif;
+    
+    /* **پالت رنگی شاداب و هنری** */
+    /* رنگ‌های اصلی */
+    --color-primary: #337ab7; /* آبی روشن و حرفه‌ای - برای لینک‌ها و دکمه‌های اصلی */
+    --color-secondary: #f0ad4e; /* نارنجی زنده - برای تأکید و کال تو اکشن */
+    --color-accent: #5cb85c; /* سبز هنری - برای موفقیت‌ها و المان‌های مکمل */
+    
+    /* پس‌زمینه و متن (حالت روشن - Light Mode) */
+    --bg-primary: #f8f9fa; /* پس‌زمینه اصلی بسیار روشن */
+    --bg-secondary: #ffffff; /* پس‌زمینه کارت‌ها و ماژول‌ها */
+    --text-primary: #212529; /* متن اصلی تیره */
+    --text-secondary: #6c757d; /* متن توضیحات */
+    --border-color: #dee2e6;
+    
+    /* سایه‌ها */
+    --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+    
+    --header-height: 75px;
+    --transition-speed: 0.3s;
+    --border-radius-base: 8px;
+}
+
+/* حالت تاریک (Dark Mode) - رنگ‌های عمیق‌تر */
+.dark-mode {
+    --bg-primary: #1e1e1e;
+    --bg-secondary: #2c2c2c;
+    --text-primary: #f1f1f1;
+    --text-secondary: #b0b0b0;
+    --border-color: #3a3a3a;
+    --color-primary: #4a90e2; /* آبی روشن‌تر برای تاریک */
+    --color-secondary: #ffc107; /* نارنجی روشن‌تر */
+}
+
+
+/* --------------------------------------------------
+  ۲. استایل‌های پایه
+  -------------------------------------------------- */
+
 html {
     scroll-behavior: smooth;
-    font-size: 16px;
-    height: 100%;
 }
 
 body {
     font-family: var(--font-primary);
-    background-color: var(--bg-primary);
+    line-height: 1.6;
     color: var(--text-primary);
-    line-height: 1.7;
+    background-color: var(--bg-primary);
+    direction: rtl; /* تضمین RTL */
     transition: background-color var(--transition-speed), color var(--transition-speed);
-    min-height: 100%;
 }
 
-/* لینک‌ها */
 a {
-    color: var(--color-main);
+    color: var(--color-primary);
     text-decoration: none;
     transition: color var(--transition-speed);
 }
 a:hover {
-    color: var(--color-accent);
+    color: var(--color-secondary);
 }
 
-/* تیترها */
-h1, h2, h3 {
-    margin-bottom: 0.5em;
-    line-height: 1.2;
-    color: var(--color-main);
-}
-h2 {
-    font-size: 2.5rem;
-    padding-bottom: 0.2em;
-    border-bottom: 2px solid var(--color-accent);
-    display: inline-block;
-    margin-bottom: 1.5rem;
-}
-
-/* -------------------- Layout -------------------- */
-main {
-    padding-top: var(--header-height); /* جبران هدر ثابت */
-}
-
-section {
-    padding: 80px 5%;
+/* برای سازگاری کامل با RTL */
+.container {
     max-width: 1200px;
     margin: 0 auto;
+    padding-inline: 15px;
 }
-
-.content-wrapper {
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: center;
-}
-
 
 /* --------------------------------------------------
-  Header & Navigation Styles
-  - شامل هدر ثابت، منوی واکنش‌گرا و دکمه‌های کنترل
----------------------------------------------------
-*/
+  ۳. هدر و ناوبری (Header & Navigation)
+  -------------------------------------------------- */
 
 header {
     position: fixed;
     top: 0;
-    width: 100%;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background-color: var(--bg-secondary);
+    box-shadow: var(--shadow-light);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    transition: box-shadow var(--transition-speed);
+}
+/* افکت اسکرول */
+header.scrolled {
+    box-shadow: var(--shadow-medium);
+}
+
+.header-inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-inline: 40px;
-    height: var(--header-height);
-    background-color: var(--bg-secondary);
-    box-shadow: 0 0 0 rgba(0,0,0,0); /* پیش‌فرض بدون سایه */
-    z-index: 100;
-    transition: box-shadow var(--transition-speed), background-color var(--transition-speed);
-}
-/* افکت اسکرول (کنترل شده با JS) */
-header.scrolled {
-    box-shadow: 0 2px 8px var(--shadow-medium);
-    background-color: var(--bg-secondary);
+    width: 100%;
 }
 
-header h1 {
-    font-size: 1.5rem;
-    margin: 0;
-    color: var(--color-main);
-}
-.logo-link {
-    display: flex;
-    align-items: center;
-    color: var(--color-main);
+.logo a {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--color-secondary); /* رنگ لوگو برجسته تر */
 }
 
-/* ناوبری اصلی (Desktop) */
+/* ناوبری اصلی (لینک‌ها) */
 #main-nav {
     display: flex;
-    gap: 20px;
-    margin-inline-start: 30px;
+    list-style: none;
+    gap: 25px;
 }
 #main-nav a {
-    color: var(--text-primary);
+    font-weight: 500;
     padding: 5px 0;
-    border-bottom: 2px solid transparent;
+    position: relative;
+    color: var(--text-primary);
 }
-#main-nav a:hover, #main-nav a[aria-current="page"] {
-    color: var(--color-main);
-    border-color: var(--color-accent);
+#main-nav a::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--color-primary);
+    transition: width var(--transition-speed);
+}
+#main-nav a:hover::after, #main-nav a.active::after {
+    width: 100%;
 }
 
-/* کنترل‌های هدر (تم، زبان، منو) */
+/* کنترل‌های هدر (جستجو، زبان، حالت تاریک) */
 .header-controls {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
-#mode-toggle, #lang-toggle {
+
+.control-btn {
     background: none;
     border: none;
-    color: var(--text-primary);
+    cursor: pointer;
     font-size: 1.2rem;
-    cursor: pointer;
-    padding: 8px;
-    transition: color var(--transition-speed);
-    line-height: 1;
+    color: var(--text-primary);
+    padding: 5px;
+    border-radius: 50%;
+    transition: background var(--transition-speed);
+}
+.control-btn:hover {
+    background-color: var(--border-color);
 }
 
-/* باکس جستجو */
-.search-box {
-    position: relative;
-    margin-inline-end: auto;
+/* دکمه منوی موبایل (همبرگری) */
+#menu-toggle {
+    display: none; /* در دسکتاپ مخفی */
 }
-#header-search {
-    padding: 8px 15px 8px 40px; /* فضای آیکون جستجو */
-    border: 1px solid var(--text-secondary);
-    border-radius: 20px;
-    width: 250px;
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-}
-.search-box button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 10px; /* RTL - آیکون در سمت چپ */
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-#search-results-dropdown {
-    position: absolute;
-    width: 100%;
-    top: 100%;
-    right: 0;
-    margin-top: 5px;
-    list-style: none;
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--shadow-light);
-    box-shadow: 0 4px 8px var(--shadow-medium);
-    border-radius: 8px;
-    z-index: 95;
-    padding: 10px 0;
-}
-#search-results-dropdown li a {
-    display: block;
-    padding: 10px 15px;
-    color: var(--text-primary);
-}
-#search-results-dropdown li a:hover {
-    background-color: var(--bg-primary);
-    color: var(--color-main);
-}
-
 
 /* --------------------------------------------------
-  Hero Section & Typing Animation
----------------------------------------------------
-*/
+  ۴. بخش Hero و آمار (Stats)
+  -------------------------------------------------- */
 
 .hero {
     min-height: 90vh;
-    padding-top: calc(var(--header-height) + 50px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/hero-bg.jpg'); /* فرض وجود تصویر */
-    background-size: cover;
-    background-position: center;
-    color: var(--color-white);
-}
-
-.hero h1 {
-    font-size: 4rem;
-    color: var(--color-white);
-    margin-bottom: 0.3em;
-    white-space: nowrap; /* برای انیمیشن تایپ */
-    overflow: hidden; /* برای انیمیشن تایپ */
-    border-right: 0.15em solid transparent;
-}
-.hero p {
-    font-size: 1.5rem;
-    max-width: 800px;
-    margin-bottom: 2rem;
-    color: rgba(255, 255, 255, 0.85);
-}
-
-/* دکمه CTA */
-.cta-button, .secondary-button {
-    display: inline-block;
-    padding: 12px 30px;
-    border-radius: 30px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s;
-}
-.cta-button {
-    background-color: var(--color-main);
-    color: var(--color-white);
-    border: 2px solid var(--color-main);
-}
-.cta-button:hover {
-    background-color: var(--color-accent);
-    border-color: var(--color-accent);
-    transform: translateY(-2px);
-}
-.secondary-button {
-    background-color: transparent;
-    color: var(--color-main);
-    border: 2px solid var(--color-main);
-    padding: 10px 25px;
-    margin-top: 15px;
-}
-.secondary-button:hover {
-    background-color: var(--color-main);
-    color: var(--color-white);
-}
-
-/* شمارنده آمار سایت */
-.site-stats {
-    display: flex;
-    gap: 50px;
-    margin-top: 60px;
-    background-color: rgba(0,0,0,0.4);
-    padding: 20px 40px;
-    border-radius: 10px;
-}
-.stat-item {
-    text-align: center;
-}
-.stat-value {
-    font-size: 2.5rem;
-    font-weight: bold;
-    display: block;
-    color: var(--color-accent);
-    line-height: 1.1;
-}
-.stat-item p {
-    font-size: 1rem;
-    margin: 0;
-    color: var(--color-white);
-}
-
-
-/* --------------------------------------------------
-  Gallery & Cards
----------------------------------------------------
-*/
-
-/* کنترل‌های گالری */
-.gallery-controls {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-bottom: 40px;
-}
-.filter-group, .sort-group {
+    padding-top: var(--header-height);
     display: flex;
     align-items: center;
-    gap: 10px;
-}
-.gallery-controls select {
-    padding: 8px 15px;
-    border-radius: 5px;
-    border: 1px solid var(--text-secondary);
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--border-color) 100%); /* گرادیانت ملایم */
 }
 
-/* نمایش Grid کارت‌ها */
-.cards, .articles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-bottom: 40px;
-    list-style: none;
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    font-weight: 800;
+    color: var(--color-primary); /* تیتر اصلی با رنگ اصلی */
 }
-
-.card, .article-summary {
-    background-color: var(--bg-secondary);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px var(--shadow-light);
-    transition: transform 0.3s, box-shadow 0.3s;
-    text-align: right;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-.card:hover, .article-summary:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px var(--shadow-medium);
-}
-
-.card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    transition: opacity 0.3s;
-}
-
-.card h3, .article-summary h3 {
-    padding: 15px 20px 0;
+.hero-content p {
     font-size: 1.3rem;
-    color: var(--color-main);
-}
-.card p, .article-summary p {
-    padding: 0 20px 15px;
-    font-size: 1rem;
     color: var(--text-secondary);
-}
-.card a, .article-summary a {
-    display: block;
-    padding: 10px 20px;
-    background-color: var(--color-accent);
-    color: var(--color-main);
-    font-weight: bold;
-    text-align: center;
-}
-.card a:hover, .article-summary a:hover {
-    background-color: var(--color-main);
-    color: var(--color-white);
-}
-
-#load-more {
-    display: block;
-    margin: 0 auto;
-}
-
-/* --------------------------------------------------
-  Carousel/Slider Styles
----------------------------------------------------
-*/
-.carousel-container {
-    overflow: hidden;
-    position: relative;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px var(--shadow-medium);
-}
-.carousel-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    width: 300%; /* اگر ۳ آیتم باشد */
-}
-.carousel-item {
-    min-width: 33.33%; /* اگر ۳ آیتم باشد */
-    height: 400px;
-    position: relative;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: flex-end;
-}
-.carousel-item:nth-child(1) { background-image: url('images/slide-1.jpg'); } /* Placeholder */
-
-.caption {
-    background-color: rgba(0,0,0,0.7);
-    color: var(--color-white);
-    padding: 20px;
-    width: 100%;
-    text-align: right;
-}
-.caption h3 {
-    color: var(--color-accent);
-    margin: 0 0 10px 0;
-}
-.caption a {
-    color: var(--color-white);
-    text-decoration: underline;
-}
-
-.prev-button, .next-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0,0,0,0.5);
-    color: var(--color-white);
-    border: none;
-    padding: 15px 10px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    z-index: 10;
-    transition: background-color 0.2s;
-}
-.prev-button:hover, .next-button:hover {
-    background-color: rgba(0,0,0,0.8);
-}
-.prev-button { right: 0; border-radius: 10px 0 0 10px; }
-.next-button { left: 0; border-radius: 0 10px 10px 0; }
-
-.carousel-dots {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 8px;
-    z-index: 10;
-}
-.carousel-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: rgba(255,255,255,0.5);
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    transition: background-color 0.2s;
-}
-.carousel-dot.active {
-    background-color: var(--color-accent);
-    transform: scale(1.2);
-}
-
-
-/* --------------------------------------------------
-  Contact Form & Newsletter
----------------------------------------------------
-*/
-
-.contact-form, .newsletter-form {
-    max-width: 600px;
-    margin: 30px auto;
-    background-color: var(--bg-secondary);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px var(--shadow-light);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    text-align: right;
-}
-.form-group {
-    position: relative;
-}
-.contact-form input, .contact-form textarea, .newsletter-form input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    transition: border-color 0.2s;
-}
-.contact-form input:focus, .contact-form textarea:focus, .newsletter-form input:focus {
-    border-color: var(--color-main);
-    outline: none;
-}
-.contact-form textarea {
-    resize: vertical;
-}
-
-.error-message {
-    color: var(--color-error);
-    font-size: 0.85rem;
-    margin-top: 5px;
-    display: none;
-}
-#form-status {
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-}
-#form-status[style*="d9534f"] { /* استایل خطا */
-    background-color: rgba(217, 83, 79, 0.1);
-}
-
-/* استایل کپچا */
-#captcha-display {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: var(--color-main);
-    padding-inline-start: 10px;
-    border-inline-start: 1px solid #ccc;
-}
-
-/* دکمه‌های فرم */
-.contact-form button[type="submit"], .newsletter-form button[type="submit"] {
-    background-color: var(--color-main);
-    color: var(--color-white);
-    border: none;
-    padding: 12px;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-.contact-form button[type="submit"]:hover, .newsletter-form button[type="submit"]:hover {
-    background-color: var(--color-accent);
-}
-
-/* --------------------------------------------------
-  FAQ (Accordion)
----------------------------------------------------
-*/
-
-.faq-accordion {
-    max-width: 800px;
-    margin: 30px auto 0;
-}
-.faq-item {
-    border: 1px solid var(--shadow-light);
-    border-radius: 8px;
-    margin-bottom: 10px;
-    background-color: var(--bg-secondary);
-}
-.faq-item summary {
-    display: block;
-    padding: 15px 20px;
-    font-weight: bold;
-    cursor: pointer;
-    outline: none;
-    color: var(--text-primary);
-    position: relative;
-    /* فلش آکاردئون */
-    padding-inline-end: 45px; /* فضا برای آیکون */
-}
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary::after {
-    content: '+';
-    position: absolute;
-    right: 20px;
-    font-size: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: transform 0.2s;
-}
-.faq-item[open] summary::after {
-    content: '−';
-}
-.faq-content {
-    padding: 15px 20px;
-    border-top: 1px solid var(--shadow-light);
-    color: var(--text-secondary);
-}
-
-
-/* --------------------------------------------------
-  Footer
----------------------------------------------------
-*/
-footer {
-    background-color: var(--bg-secondary);
-    padding: 40px 5%;
-    border-top: 5px solid var(--color-main);
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-}
-
-.footer-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
-    max-width: 1200px;
+    max-width: 700px;
     margin: 0 auto 30px;
 }
 
-.footer-col h3 {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    color: var(--color-main);
-}
-
-.footer-col ul {
-    list-style: none;
-}
-.footer-col ul a {
-    display: block;
-    padding: 5px 0;
-    color: var(--text-secondary);
-}
-.footer-col ul a:hover {
-    color: var(--color-main);
-}
-.footer-col address p {
-    margin: 5px 0;
-}
-
-.social-links a {
-    display: inline-block;
-    font-size: 1.5rem;
-    margin-inline-end: 15px;
-    color: var(--color-main);
-}
-
-.footer-bottom {
-    border-top: 1px solid var(--shadow-light);
-    padding-top: 15px;
-    text-align: center;
-    margin-top: 20px;
-}
-
-
-/* --------------------------------------------------
-  Scroll Utilities
----------------------------------------------------
-*/
-
-/* نوار پیشرفت (Progress Bar) */
-#progress-bar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: var(--progress-bar-height);
-    background-color: var(--color-accent);
-    width: 0%;
-    z-index: 101;
-    transition: none; /* بدون ترانزیشن برای به‌روزرسانی روان */
-}
-
-/* دکمه بازگشت به بالا */
-#back-to-top {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    width: 45px;
-    height: 45px;
-    background-color: var(--color-main);
+.hero-action .btn {
+    /* استایل دکمه‌های اصلی */
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    border: 2px solid var(--color-secondary);
+    background-color: var(--color-secondary);
     color: var(--color-white);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 4px 10px var(--shadow-medium);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s, visibility 0.3s;
-    z-index: 99;
+    transition: all var(--transition-speed);
+    box-shadow: var(--shadow-light);
 }
-#back-to-top.show {
-    opacity: 1;
-    visibility: visible;
-}
-#back-to-top svg {
-    display: block;
-    fill: var(--color-white);
-    margin: 0 auto;
+.hero-action .btn:hover {
+    background-color: transparent;
+    color: var(--color-secondary);
 }
 
 /* --------------------------------------------------
-  Animation & Accessibility (A11y)
----------------------------------------------------
-*/
+  ۵. آمار سایت (حل مشکل نامتوازن بودن اعداد طولانی)
+  -------------------------------------------------- */
 
-/* انیمیشن Scroll Reveal (هماهنگ با script.js) */
-.fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 1s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.site-stats {
+    padding: 60px 0;
+    background-color: var(--bg-secondary);
+    box-shadow: var(--shadow-medium);
 }
-.fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* کلاس‌های کمکی برای دسترسی‌پذیری */
-.sr-only { /* برای مخفی کردن بصری لیبل‌ها */
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
+.stats-grid {
+    display: grid;
+    /* این طرح گرید تضمین می‌کند که حتی اعداد طولانی هم درون ستون خود جا شوند */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 25px;
+    text-align: center;
 }
 
-/* Breadcrumb Styling */
-.breadcrumb-nav {
-    padding: 10px 5%;
-    max-width: 1200px;
-    margin: 0 auto;
+.stat-item {
+    padding: 20px;
+    border-radius: var(--border-radius-base);
     background-color: var(--bg-primary);
-    font-size: 0.9rem;
-    border-bottom: 1px solid var(--shadow-light);
-}
-.breadcrumb {
-    display: flex;
-    list-style: none;
-}
-.breadcrumb li:not(:last-child)::after {
-    content: ' / ';
-    margin-inline: 5px;
-    color: var(--text-secondary);
-}
-.breadcrumb li:last-child a {
-    color: var(--text-secondary);
-    cursor: default;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-light);
 }
 
+.stat-value {
+    /* **بهبود نمایش اعداد:** فونت بزرگ‌تر و ضخیم‌تر برای برجسته شدن */
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--color-primary); 
+    margin-bottom: 5px;
+    /* اطمینان از شکستن خط در صورت طولانی بودن عدد */
+    word-break: break-word; 
+    overflow-wrap: break-word; 
+    line-height: 1.1; 
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
 
 /* --------------------------------------------------
-  Responsive Design (Mobile First Approach)
----------------------------------------------------
-*/
+  ۶. بخش‌های محتوایی (Section Styles)
+  -------------------------------------------------- */
 
-/* آیکون منوی همبرگری (مخفی در دسکتاپ) */
-#menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: var(--text-primary);
-    font-size: 1.8rem;
-    cursor: pointer;
-    line-height: 1;
-    padding: 5px;
-    margin-inline-start: 10px;
+section {
+    padding: 80px 0;
+    /* فاصله کافی بین بخش‌ها */
+}
+section:nth-child(even) {
+    background-color: var(--bg-primary);
+}
+section:nth-child(odd) {
+    background-color: var(--bg-secondary);
 }
 
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
 
-@media (max-width: 1024px) {
-    /* تنظیمات میانی برای تبلت */
-    .hero h1 { font-size: 3rem; }
-    .hero p { font-size: 1.2rem; }
-    header { padding-inline: 20px; }
-    
-    #header-search { width: 200px; }
+.section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    position: relative;
+    display: inline-block;
+}
+
+.section-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 50%;
+    transform: translateX(50%);
+    width: 60px;
+    height: 4px;
+    background-color: var(--color-secondary);
+    border-radius: 2px;
+}
+
+/* --------------------------------------------------
+  ۷. کارت‌های هنری (Art Card) - استفاده در گالری
+  -------------------------------------------------- */
+
+#art-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.art-card {
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius-base);
+    overflow: hidden;
+    box-shadow: var(--shadow-medium);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.art-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.art-card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.art-card-body {
+    padding: 20px;
+}
+.art-card-body h3 {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+}
+.art-card-body p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* --------------------------------------------------
+  ۸. فرم‌ها و دکمه‌ها (Forms & Buttons)
+  -------------------------------------------------- */
+
+.form-group {
+    margin-bottom: 15px;
+}
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-control:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(51, 122, 183, 0.2);
+    outline: none;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn-primary:hover {
+    background-color: #286090;
+}
+
+/* --------------------------------------------------
+  ۹. واکنش‌گرایی (Responsive Design)
+  -------------------------------------------------- */
+
+@media (max-width: 992px) {
+    /* دسکتاپ کوچک و تبلت‌ها */
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    .section-header h2 {
+        font-size: 2rem;
+    }
+    #main-nav {
+        gap: 15px;
+    }
 }
 
 @media (max-width: 768px) {
-    /* تنظیمات موبایل */
-    
+    /* موبایل‌ها */
     header {
         height: 60px;
-        padding-inline: 15px;
+        padding-inline: 10px;
     }
-    header h1 {
-        font-size: 1.3rem;
-    }
-    
-    /* مخفی کردن جستجو در موبایل برای سادگی هدر */
-    .search-box {
-        display: none;
-    }
-    
-    /* نمایش دکمه همبرگری */
-    #menu-toggle {
-        display: block;
+    .logo a {
+        font-size: 1.5rem;
     }
 
-    /* منوی موبایل */
+    /* **منوی موبایل (همبرگری)** */
+    #menu-toggle {
+        display: block; /* نمایش دکمه همبرگری */
+    }
+
     #main-nav {
         display: none; /* پیش‌فرض مخفی */
         position: absolute;
@@ -823,47 +419,92 @@ footer {
         background-color: var(--bg-secondary);
         box-shadow: 0 4px 5px var(--shadow-medium);
         z-index: 90;
-        margin: 0;
         padding-bottom: 10px;
     }
     #main-nav.open {
-        display: flex;
+        display: flex; /* نمایش با کلیک */
+    }
+    #main-nav li {
+        width: 100%;
     }
     #main-nav a {
-        padding: 15px 20px;
-        border-bottom: 1px solid var(--shadow-light);
-        color: var(--text-primary);
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--border-color);
+        width: 100%;
+        display: block;
     }
     
-    /* تغییر ترتیب هدر کنترل‌ها */
     .header-controls {
-        order: -1;
-        gap: 8px;
+        order: -1; /* تغییر ترتیب برای بهتر دیده شدن */
+        gap: 10px;
     }
     
-    /* بخش هیرو */
-    .hero { min-height: 80vh; }
-    .hero h1 { font-size: 2rem; }
-    .hero p { font-size: 1rem; }
-    
-    .site-stats { 
-        gap: 30px; 
-        padding: 15px 20px;
+    .hero {
+        min-height: 70vh;
     }
-    .stat-value { font-size: 1.8rem; }
-    
-    /* بخش‌های اصلی */
-    section { padding: 40px 5%; }
-    h2 { font-size: 2rem; }
-    
-    .gallery-controls {
-        flex-direction: column;
-        gap: 15px;
-        align-items: flex-start;
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr; /* دو ستونی در موبایل */
     }
     
-    /* فوتر */
-    .footer-grid {
-        grid-template-columns: 1fr;
+    section {
+        padding: 60px 0;
     }
+}
+
+/* --------------------------------------------------
+  ۱۰. انیمیشن‌ها و افکت‌ها (Fade In, Scroll Progress)
+  -------------------------------------------------- */
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background-color: var(--color-accent);
+    width: 0%;
+    z-index: 1001;
+}
+
+/* بازگشت به بالا */
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    border: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+    z-index: 990;
+    transform: translateY(10px);
+    box-shadow: var(--shadow-medium);
+}
+#back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
