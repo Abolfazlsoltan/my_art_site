@@ -1,76 +1,77 @@
 /*
 ==================================================
-  گنجینه فرهنگ و هنر - فایل Style.css
-  بازنویسی شده برای ظاهر مدرن، شاداب‌تر و واکنش‌گرایی کامل
+  گنجینه فرهنگ و هنر - Style.css پیشرفته (نسخه ۱۰۰۰ خطی)
+  شامل: CSS Modules, Utilities, Advanced Animations, & New Components
 ==================================================
 */
 
 /* --------------------------------------------------
-  ۱. CSS Reset و متغیرهای اصلی (پالت رنگی شاداب)
-  -------------------------------------------------- */
-
+  ۱. CSS Reset و متغیرهای پایه (Colors, Typography, Spacing)
+-------------------------------------------------- */
 *, *::before, *::after {
-    /* **حل مشکل اصلی نامتوازن بودن صفحه:** اطمینان از اینکه padding و border در عرض و ارتفاع المان حساب شود. */
-    box-sizing: border-box; 
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
 :root {
-    /* **فونت:** استفاده از فونت استاندارد با وزن‌های دقیق */
-    --font-primary: 'Vazirmatn', Tahoma, sans-serif;
-    
-    /* **پالت رنگی شاداب و هنری** */
     /* رنگ‌های اصلی */
-    --color-primary: #337ab7; /* آبی روشن و حرفه‌ای - برای لینک‌ها و دکمه‌های اصلی */
-    --color-secondary: #f0ad4e; /* نارنجی زنده - برای تأکید و کال تو اکشن */
-    --color-accent: #5cb85c; /* سبز هنری - برای موفقیت‌ها و المان‌های مکمل */
+    --color-primary: #337ab7; /* آبی اصلی */
+    --color-secondary: #f0ad4e; /* نارنجی ثانویه */
+    --color-accent: #5cb85c; /* سبز تاکیدی */
+    --color-danger: #d9534f; /* قرمز خطر */
+    --color-text-light: #f8f9fa; /* متن روشن */
     
-    /* پس‌زمینه و متن (حالت روشن - Light Mode) */
-    --bg-primary: #f8f9fa; /* پس‌زمینه اصلی بسیار روشن */
-    --bg-secondary: #ffffff; /* پس‌زمینه کارت‌ها و ماژول‌ها */
-    --text-primary: #212529; /* متن اصلی تیره */
-    --text-secondary: #6c757d; /* متن توضیحات */
+    /* پس‌زمینه‌ها و متن */
+    --bg-primary: #f8f9fa;
+    --bg-secondary: #ffffff;
+    --bg-light-section: #f0f3f5;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
     --border-color: #dee2e6;
     
-    /* سایه‌ها */
-    --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.08);
-    --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
-    
+    /* تایپوگرافی و فضاها */
+    --font-primary: 'Vazirmatn', Tahoma, sans-serif;
     --header-height: 75px;
     --transition-speed: 0.3s;
     --border-radius-base: 8px;
+    --btn-radius: 50px;
+    --loader-size: 60px;
+    
+    /* سایه‌ها */
+    --shadow-light: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-medium: 0 4px 12px rgba(0,0,0,0.15);
+    --shadow-hover: 0 10px 20px rgba(0,0,0,0.25);
 }
 
-/* حالت تاریک (Dark Mode) - رنگ‌های عمیق‌تر */
-.dark-mode {
-    --bg-primary: #1e1e1e;
-    --bg-secondary: #2c2c2c;
-    --text-primary: #f1f1f1;
-    --text-secondary: #b0b0b0;
-    --border-color: #3a3a3a;
-    --color-primary: #4a90e2; /* آبی روشن‌تر برای تاریک */
-    --color-secondary: #ffc107; /* نارنجی روشن‌تر */
-}
-
-
-/* --------------------------------------------------
-  ۲. استایل‌های پایه
-  -------------------------------------------------- */
-
-html {
-    scroll-behavior: smooth;
+/* حالت تاریک (Dark Mode) */
+.dark-mode:root {
+    --color-primary: #5bc0de; /* آبی روشن‌تر برای کنتراست */
+    --color-secondary: #f3c27f;
+    --color-accent: #62c462;
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-light-section: #252525;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --border-color: #333;
+    --shadow-light: 0 1px 3px rgba(255,255,255,0.1);
+    --shadow-medium: 0 4px 12px rgba(0,0,0,0.5);
+    --shadow-hover: 0 10px 20px rgba(0,0,0,0.7);
 }
 
 body {
     font-family: var(--font-primary);
-    line-height: 1.6;
     color: var(--text-primary);
     background-color: var(--bg-primary);
-    direction: rtl; /* تضمین RTL */
+    direction: rtl; /* تنظیم اولیه برای فارسی */
+    line-height: 1.6;
     transition: background-color var(--transition-speed), color var(--transition-speed);
+    padding-top: var(--header-height);
+    min-height: 100vh;
 }
-
+.rtl { direction: rtl; }
+.ltr { direction: ltr; }
 a {
     color: var(--color-primary);
     text-decoration: none;
@@ -79,432 +80,720 @@ a {
 a:hover {
     color: var(--color-secondary);
 }
-
-/* برای سازگاری کامل با RTL */
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding-inline: 15px;
+    padding: 0 20px;
+}
+.section-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+.section-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+.section-title-white {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--color-text-light);
+}
+.section-subtitle-white {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+.bg-light-section {
+    background-color: var(--bg-light-section);
+}
+.bg-accent-section {
+    background-color: var(--color-accent);
+    color: var(--color-text-light);
 }
 
 /* --------------------------------------------------
-  ۳. هدر و ناوبری (Header & Navigation)
-  -------------------------------------------------- */
+  ۲. Utility Classes (Spacing, Flex, Grid)
+-------------------------------------------------- */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.text-max-width-700 { max-width: 700px; }
+.not-italic { font-style: normal; }
+.hidden-mobile { display: block; }
+.mobile-only { display: none; }
 
-header {
+/* Spacing Utilities (m: margin, p: padding, t: top, b: bottom) */
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 1rem; }
+.mt-4 { margin-top: 1.5rem; }
+.mt-5 { margin-top: 3rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+.mb-5 { margin-bottom: 3rem; }
+.py-5 { padding-top: 4rem; padding-bottom: 4rem; }
+.p-4 { padding: 1.5rem; }
+
+/* Flex Utilities */
+.flex-row { display: flex; }
+.align-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+
+/* Grid Utilities (با استفاده از CSS Grid برای layoutهای مدرن) */
+.row { display: flex; flex-wrap: wrap; margin-left: -15px; margin-right: -15px; }
+.col-md-4 { width: 33.3333%; padding: 0 15px; }
+.row-grid { display: grid; gap: 30px; }
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+
+
+/* --------------------------------------------------
+  ۳. Header و Navigation
+-------------------------------------------------- */
+#main-header {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
+    width: 100%;
     height: var(--header-height);
     background-color: var(--bg-secondary);
-    box-shadow: var(--shadow-light);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    transition: box-shadow var(--transition-speed);
-}
-/* افکت اسکرول */
-header.scrolled {
     box-shadow: var(--shadow-medium);
+    z-index: 1000;
+    transition: background-color var(--transition-speed);
 }
-
-.header-inner {
+.logo-area {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    width: 100%;
 }
-
-.logo a {
+.logo {
     font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--color-secondary); /* رنگ لوگو برجسته تر */
+    font-weight: 900;
+    color: var(--color-primary);
+    transition: transform var(--transition-speed);
 }
-
-/* ناوبری اصلی (لینک‌ها) */
-#main-nav {
-    display: flex;
+.logo:hover {
+    transform: scale(1.05) rotate(2deg);
+}
+.logo-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-right: 5px;
+}
+#main-nav ul {
     list-style: none;
+    display: flex;
     gap: 25px;
 }
-#main-nav a {
+.nav-link {
     font-weight: 500;
     padding: 5px 0;
     position: relative;
-    color: var(--text-primary);
 }
-#main-nav a::after {
+.nav-link::after { /* افکت زیرخط مدرن */
     content: '';
     position: absolute;
+    bottom: -5px;
     right: 0;
-    bottom: 0;
     width: 0;
     height: 3px;
-    background-color: var(--color-primary);
+    background-color: var(--color-secondary);
     transition: width var(--transition-speed);
 }
-#main-nav a:hover::after, #main-nav a.active::after {
+.nav-link:hover::after, .nav-link.active::after {
     width: 100%;
-}
-
-/* کنترل‌های هدر (جستجو، زبان، حالت تاریک) */
-.header-controls {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.control-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-    color: var(--text-primary);
-    padding: 5px;
-    border-radius: 50%;
-    transition: background var(--transition-speed);
-}
-.control-btn:hover {
-    background-color: var(--border-color);
-}
-
-/* دکمه منوی موبایل (همبرگری) */
-#menu-toggle {
-    display: none; /* در دسکتاپ مخفی */
+    left: 0;
+    right: auto;
 }
 
 /* --------------------------------------------------
-  ۴. بخش Hero و آمار (Stats)
-  -------------------------------------------------- */
+  ۴. دکمه‌ها و فرم‌ها
+-------------------------------------------------- */
+.primary-button, .secondary-button, .main-cta-button, .submit-button {
+    padding: 10px 20px;
+    border-radius: var(--btn-radius);
+    font-weight: 500;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all var(--transition-speed);
+    text-align: center;
+    display: inline-block;
+}
+.primary-button {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    border-color: var(--color-primary);
+}
+.primary-button:hover {
+    background-color: transparent;
+    color: var(--color-primary);
+}
+.secondary-button {
+    background-color: transparent;
+    color: var(--color-secondary);
+    border-color: var(--color-secondary);
+}
+.secondary-button:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-text-light);
+}
+.main-cta-button {
+    background-color: var(--color-accent);
+    color: var(--color-text-light);
+    border-color: var(--color-accent);
+    font-size: 1.2rem;
+    padding: 12px 30px;
+    box-shadow: var(--shadow-medium);
+    animation: pulse 2s infinite; /* انیمیشن جذب توجه */
+}
+.main-cta-button:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    animation: none;
+}
+.submit-button {
+    width: 100%;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    border-color: var(--color-primary);
+}
+.submit-button:hover {
+    opacity: 0.9;
+}
+button#theme-toggle, button#lang-toggle, button#menu-toggle {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    padding: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: color var(--transition-speed), transform var(--transition-speed);
+}
+button#theme-toggle:hover, button#lang-toggle:hover {
+    color: var(--color-primary);
+    transform: scale(1.1);
+}
 
-.hero {
-    min-height: 90vh;
-    padding-top: var(--header-height);
+/* --------------------------------------------------
+  ۵. Hero و Stats
+-------------------------------------------------- */
+#hero {
+    min-height: 500px;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--border-color) 100%); /* گرادیانت ملایم */
+    padding-top: 100px;
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
 }
-
-.hero-content h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    font-weight: 800;
-    color: var(--color-primary); /* تیتر اصلی با رنگ اصلی */
-}
-.hero-content p {
-    font-size: 1.3rem;
-    color: var(--text-secondary);
-    max-width: 700px;
-    margin: 0 auto 30px;
-}
-
-.hero-action .btn {
-    /* استایل دکمه‌های اصلی */
-    padding: 12px 30px;
-    font-size: 1.1rem;
-    border-radius: 50px;
-    border: 2px solid var(--color-secondary);
-    background-color: var(--color-secondary);
-    color: var(--color-white);
-    transition: all var(--transition-speed);
-    box-shadow: var(--shadow-light);
-}
-.hero-action .btn:hover {
-    background-color: transparent;
-    color: var(--color-secondary);
-}
-
-/* --------------------------------------------------
-  ۵. آمار سایت (حل مشکل نامتوازن بودن اعداد طولانی)
-  -------------------------------------------------- */
-
-.site-stats {
-    padding: 60px 0;
-    background-color: var(--bg-secondary);
-    box-shadow: var(--shadow-medium);
-}
-.stats-grid {
-    display: grid;
-    /* این طرح گرید تضمین می‌کند که حتی اعداد طولانی هم درون ستون خود جا شوند */
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-    gap: 25px;
-    text-align: center;
-}
-
-.stat-item {
-    padding: 20px;
-    border-radius: var(--border-radius-base);
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-light);
-}
-
-.stat-value {
-    /* **بهبود نمایش اعداد:** فونت بزرگ‌تر و ضخیم‌تر برای برجسته شدن */
-    font-size: 2.5rem;
+#hero h1 {
+    font-size: 3.5rem;
     font-weight: 900;
-    color: var(--color-primary); 
-    margin-bottom: 5px;
-    /* اطمینان از شکستن خط در صورت طولانی بودن عدد */
-    word-break: break-word; 
-    overflow-wrap: break-word; 
-    line-height: 1.1; 
+    color: var(--text-primary);
 }
-
-.stat-label {
-    font-size: 1rem;
+#hero .subtitle {
+    font-size: 1.2rem;
     color: var(--text-secondary);
 }
-
-/* --------------------------------------------------
-  ۶. بخش‌های محتوایی (Section Styles)
-  -------------------------------------------------- */
-
-section {
-    padding: 80px 0;
-    /* فاصله کافی بین بخش‌ها */
+.stats-bar {
+    display: flex;
+    justify-content: space-around;
+    padding: 30px 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
 }
-section:nth-child(even) {
-    background-color: var(--bg-primary);
+.stat-item {
+    padding: 0 20px;
 }
-section:nth-child(odd) {
-    background-color: var(--bg-secondary);
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.section-header h2 {
+.stat-number {
     font-size: 2.5rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--color-primary);
-    position: relative;
-    display: inline-block;
-}
-
-.section-header h2::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    right: 50%;
-    transform: translateX(50%);
-    width: 60px;
-    height: 4px;
-    background-color: var(--color-secondary);
-    border-radius: 2px;
+    display: block;
 }
 
 /* --------------------------------------------------
-  ۷. کارت‌های هنری (Art Card) - استفاده در گالری
-  -------------------------------------------------- */
-
-#art-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+  ۶. Art Card و Carousel (با افکت Tilt پیشرفته)
+-------------------------------------------------- */
+.carousel-container {
+    position: relative;
+    overflow: hidden;
 }
-
+.carousel-track {
+    transition: transform 0.5s ease-in-out;
+    padding-bottom: 20px; /* برای جلوگیری از بریده شدن سایه */
+}
 .art-card {
+    min-width: 300px; /* برای موبایل */
+    flex: 1 1 300px;
+    margin: 0 15px;
     background-color: var(--bg-secondary);
     border-radius: var(--border-radius-base);
-    overflow: hidden;
     box-shadow: var(--shadow-medium);
-    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    transform-style: preserve-3d;
 }
 .art-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-5px) rotateX(1deg) rotateY(1deg) scale(1.02); /* افکت 3D-Tilt */
 }
-
-.art-card-image {
-    width: 100%;
+.art-card-img-container {
     height: 200px;
-    object-fit: cover;
+    overflow: hidden;
 }
-
+.art-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.art-card:hover img {
+    transform: scale(1.1);
+}
 .art-card-body {
     padding: 20px;
 }
 .art-card-body h3 {
-    font-size: 1.3rem;
-    color: var(--text-primary);
+    font-size: 1.4rem;
     margin-bottom: 5px;
 }
-.art-card-body p {
-    font-size: 0.9rem;
+.artist {
     color: var(--text-secondary);
-}
-
-/* --------------------------------------------------
-  ۸. فرم‌ها و دکمه‌ها (Forms & Buttons)
-  -------------------------------------------------- */
-
-.form-group {
+    font-style: italic;
     margin-bottom: 15px;
 }
-.form-control {
+.details-button {
+    color: var(--color-secondary);
+    font-weight: 500;
+    position: relative;
+}
+.details-button::after { /* افکت دکمه گرادیان بردر */
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
     width: 100%;
-    padding: 10px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--transition-speed);
+}
+.details-button:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 15px 10px;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color var(--transition-speed);
+}
+.carousel-control:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.carousel-control.prev { right: 0; border-radius: 0 5px 5px 0; }
+.carousel-control.next { left: 0; border-radius: 5px 0 0 5px; }
+
+
+/* --------------------------------------------------
+  ۷. Articles List و Filtering
+-------------------------------------------------- */
+.filter-bar {
+    background-color: var(--bg-secondary);
+    padding: 15px 25px;
+    border-radius: var(--border-radius-base);
+    box-shadow: var(--shadow-light);
+}
+#category-filter, #sort-order {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    margin-right: 10px;
+}
+.article-card {
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius-base);
+    box-shadow: var(--shadow-light);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+    min-height: 400px;
+}
+.article-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+.article-body {
+    padding: 20px;
+}
+.read-more {
+    color: var(--color-accent);
+    font-weight: 500;
+}
+.article-card.hidden { /* کلاس برای فیلتر شدن */
+    display: none;
+    opacity: 0;
+    height: 0;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+
+/* --------------------------------------------------
+  ۸. Testimonials Component (بخش جدید)
+-------------------------------------------------- */
+.testimonial-card {
+    background-color: var(--bg-secondary);
+    padding: 30px;
+    border-radius: var(--border-radius-base);
+    box-shadow: var(--shadow-medium);
+    border-top: 5px solid var(--color-secondary);
+    transition: transform 0.3s ease;
+}
+.testimonial-card:hover {
+    transform: translateY(-5px);
+}
+.testimonial-card p {
+    font-style: italic;
+    margin: 15px 0;
+    color: var(--text-primary);
+}
+.reviewer {
+    font-weight: 700;
+    color: var(--color-primary);
+    font-style: normal !important;
+}
+.rating {
+    color: var(--color-secondary);
+    font-size: 1.2rem;
+}
+
+
+/* --------------------------------------------------
+  ۹. Form Styling و CAPTCHA
+-------------------------------------------------- */
+.form-container {
+    background-color: var(--bg-secondary);
+    padding: 30px;
+    border-radius: var(--border-radius-base);
+    box-shadow: var(--shadow-medium);
+}
+.elevation-3 {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+.form-group input[type="text"], 
+.form-group input[type="email"], 
+.form-group input[type="tel"],
+.form-group textarea,
+.newsletter-group input[type="email"] {
+    width: 100%;
+    padding: 10px 15px;
     border: 1px solid var(--border-color);
     border-radius: 5px;
-    font-family: var(--font-primary);
-    font-size: 1rem;
     background-color: var(--bg-primary);
-    color: var(--text-primary);
-    transition: border-color 0.3s, box-shadow 0.3s;
+    transition: border-color 0.3s ease;
 }
-.form-control:focus {
+.form-group input:focus, .form-group textarea:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(51, 122, 183, 0.2);
     outline: none;
+    box-shadow: 0 0 0 2px rgba(51, 122, 183, 0.2);
+}
+.error-message {
+    color: var(--color-danger);
+    font-size: 0.9rem;
+    margin-top: 5px;
+    height: 18px;
+    line-height: 1;
+}
+.captcha-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    background-color: var(--bg-light-section);
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
-.btn-primary {
+/* --------------------------------------------------
+  ۱۰. FAQ (Accordion)
+-------------------------------------------------- */
+.faq-accordion {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.faq-item {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-base);
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+.faq-question {
+    width: 100%;
+    background-color: var(--bg-secondary);
+    border: none;
+    padding: 15px 20px;
+    text-align: right;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-primary);
+    transition: background-color var(--transition-speed);
+}
+.faq-question:hover {
+    background-color: var(--bg-light-section);
+}
+.faq-question i {
+    transition: transform var(--transition-speed);
+}
+.faq-question[aria-expanded="true"] i {
+    transform: rotate(180deg);
+}
+.faq-answer {
+    padding: 0 20px;
+    background-color: var(--bg-light-section);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+}
+.faq-answer p {
+    padding-bottom: 15px;
+}
+
+/* --------------------------------------------------
+  ۱۱. Footer
+-------------------------------------------------- */
+#main-footer {
+    background-color: #1a1a1a;
+    color: rgba(255, 255, 255, 0.8);
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 30px;
+}
+.footer-logo {
+    color: var(--color-secondary);
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+.footer-col h4 {
+    color: var(--color-primary);
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+.footer-col ul li a {
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    margin-bottom: 10px;
+}
+.footer-col ul li a:hover {
+    color: var(--color-primary);
+    transform: translateX(3px);
+}
+.footer-contact p {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+.footer-contact i {
+    margin-right: 10px;
+    color: var(--color-primary);
+    font-size: 1rem;
+}
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    font-size: 0.9rem;
+}
+.social-links a {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.5rem;
+    margin-right: 15px;
+    transition: color 0.3s;
+}
+.social-links a:hover {
+    color: var(--color-primary);
+}
+
+
+/* --------------------------------------------------
+  ۱۲. Progress Bar & Back-to-Top
+-------------------------------------------------- */
+#progress-container {
+    position: fixed;
+    top: var(--header-height);
+    width: 100%;
+    height: 4px;
+    z-index: 999;
+    background-color: var(--bg-light-section);
+}
+#progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: var(--color-secondary);
+    transition: width 0.1s linear;
+}
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
     background-color: var(--color-primary);
     color: white;
-    padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 50%;
     cursor: pointer;
-    transition: background-color 0.3s;
+    box-shadow: var(--shadow-medium);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 998;
 }
-.btn-primary:hover {
-    background-color: #286090;
+#back-to-top.show {
+    opacity: 1;
+    transform: translateY(0);
 }
-
-/* --------------------------------------------------
-  ۹. واکنش‌گرایی (Responsive Design)
-  -------------------------------------------------- */
-
-@media (max-width: 992px) {
-    /* دسکتاپ کوچک و تبلت‌ها */
-    .hero-content h1 {
-        font-size: 2.5rem;
-    }
-    .section-header h2 {
-        font-size: 2rem;
-    }
-    #main-nav {
-        gap: 15px;
-    }
-}
-
-@media (max-width: 768px) {
-    /* موبایل‌ها */
-    header {
-        height: 60px;
-        padding-inline: 10px;
-    }
-    .logo a {
-        font-size: 1.5rem;
-    }
-
-    /* **منوی موبایل (همبرگری)** */
-    #menu-toggle {
-        display: block; /* نمایش دکمه همبرگری */
-    }
-
-    #main-nav {
-        display: none; /* پیش‌فرض مخفی */
-        position: absolute;
-        top: 60px;
-        right: 0;
-        width: 100%;
-        flex-direction: column;
-        background-color: var(--bg-secondary);
-        box-shadow: 0 4px 5px var(--shadow-medium);
-        z-index: 90;
-        padding-bottom: 10px;
-    }
-    #main-nav.open {
-        display: flex; /* نمایش با کلیک */
-    }
-    #main-nav li {
-        width: 100%;
-    }
-    #main-nav a {
-        padding: 12px 20px;
-        border-bottom: 1px solid var(--border-color);
-        width: 100%;
-        display: block;
-    }
-    
-    .header-controls {
-        order: -1; /* تغییر ترتیب برای بهتر دیده شدن */
-        gap: 10px;
-    }
-    
-    .hero {
-        min-height: 70vh;
-    }
-    .hero-content h1 {
-        font-size: 2rem;
-    }
-    .hero-content p {
-        font-size: 1rem;
-    }
-
-    .stats-grid {
-        grid-template-columns: 1fr 1fr; /* دو ستونی در موبایل */
-    }
-    
-    section {
-        padding: 60px 0;
-    }
+#back-to-top:hover {
+    background-color: var(--color-secondary);
 }
 
 /* --------------------------------------------------
-  ۱۰. انیمیشن‌ها و افکت‌ها (Fade In, Scroll Progress)
-  -------------------------------------------------- */
+  ۱۳. Loader
+-------------------------------------------------- */
+#page-loader {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background-color: var(--bg-primary);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+}
+#page-loader .loader-circle {
+    width: var(--loader-size);
+    height: var(--loader-size);
+    border: 6px solid var(--color-primary);
+    border-top: 6px solid var(--color-secondary);
+    border-radius:50%;
+    animation: spin 1s linear infinite;
+}
 
-.fade-in {
+/* --------------------------------------------------
+  ۱۴. Keyframes و Animations
+-------------------------------------------------- */
+@keyframes spin {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+}
+@keyframes fadeInUp {
+    0% {opacity:0; transform: translateY(20px);}
+    100% {opacity:1; transform: translateY(0);}
+}
+.scroll-reveal { /* کلاس مورد استفاده در JS برای انیمیشن */
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
-
-.fade-in.visible {
+.scroll-reveal.visible {
     opacity: 1;
     transform: translateY(0);
 }
-
-#progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 4px;
-    background-color: var(--color-accent);
-    width: 0%;
-    z-index: 1001;
+@keyframes shake { /* انیمیشن خطا برای فرم‌ها */
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+.form-group.error input, .form-group.error textarea {
+    border-color: var(--color-danger);
+    animation: shake 0.5s;
+}
+@keyframes pulse { /* انیمیشن دکمه CTA */
+    0% { box-shadow: 0 0 0 0 rgba(92, 184, 92, 0.4); }
+    70% { box-shadow: 0 0 0 20px rgba(92, 184, 92, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(92, 184, 92, 0); }
 }
 
-/* بازگشت به بالا */
-#back-to-top {
+
+/* --------------------------------------------------
+  ۱۵. Responsive + Media Queries (بهینه‌سازی شده)
+-------------------------------------------------- */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 960px;
+    }
+}
+@media (max-width: 992px) {
+    .hero-content h1 { font-size: 2.5rem; }
+    .art-card-body h3 { font-size: 1.2rem; }
+    .stats-bar { padding: 20px 0; }
+    .stat-item { padding: 0 10px; }
+    #main-nav { display: none; }
+    .hidden-mobile { display: none !important; }
+    .mobile-only { display: block !important; }
+    .search-box { display: none; } /* حذف جستجو در موبایل */
+    .row-grid.grid-3 { grid-template-columns: 1fr; }
+    .row-grid.grid-2 { grid-template-columns: 1fr; }
+    .col-md-4 { width: 100%; }
+}
+@media (max-width: 768px) {
+    #hero h1 { font-size: 2rem; }
+    #hero .subtitle { font-size: 1rem; }
+    .section-title { font-size: 1.8rem; }
+    .footer-grid { grid-template-columns: 1fr; }
+}
+
+/* حالت‌های نمایش موبایل برای منو */
+#mobile-menu {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 45px;
-    height: 45px;
-    background-color: var(--color-secondary);
-    color: var(--color-white);
-    border: none;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    cursor: pointer;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
-    z-index: 990;
-    transform: translateY(10px);
+    top: var(--header-height);
+    right: 0;
+    width: 100%;
+    background-color: var(--bg-secondary);
     box-shadow: var(--shadow-medium);
+    transition: transform 0.4s ease-in-out;
+    transform: translateX(100%);
+    max-height: calc(100vh - var(--header-height));
+    overflow-y: auto;
+    z-index: 999;
 }
-#back-to-top.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+#mobile-menu.open {
+    transform: translateX(0);
+}
+#mobile-menu ul {
+    list-style: none;
+    padding: 20px;
+}
+#mobile-menu ul li a {
+    display: block;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1.1rem;
+    font-weight: 500;
 }
