@@ -13,300 +13,397 @@
     <link rel="alternate" href="https://yourwebsite.com/en" hreflang="en">
     
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJ8g0oQ1E58W55rB7I6bFk/fF5o5sM/7K4sV7rVzR5r..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJ8g0oQ1E58W55rB7I6bFk/fF5o5sM/7K4sV7rVzR5r+6SjP4p5p6a2V9z" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-    <meta name="theme-color" content="#7b4b27"> 
     <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <meta name="theme-color" content="#337ab7">
 </head>
 
-<body dir="rtl">
-
-    <div id="progress-bar"></div>
-
-    <header>
-        <div class="logo-link">
-            <h1 data-lang-key="logoTitle">گنجینه هنر</h1>
-        </div>
-        
-        <nav id="main-nav" aria-label="ناوبری اصلی">
-            <ul>
-                <li><a href="/" data-lang-key="navHome" aria-current="page">خانه</a></li>
-                <li><a href="#featured-slider" data-lang-key="navFeatured">آثار ویژه</a></li>
-                <li><a href="#articles" data-lang-key="navArticles">مقالات</a></li>
-                <li><a href="#about" data-lang-key="navAbout">درباره ما</a></li>
-                <li><a href="#contact" data-lang-key="navContact">تماس با ما</a></li>
-                <li><a href="#faq" data-lang-key="navFAQ">سؤالات متداول</a></li>
-            </ul>
-        </nav>
-
-        <div class="header-controls">
-            <div class="search-box">
-                <input type="search" id="header-search" data-lang-key="searchPlaceholder" placeholder="جستجوی آثار و مقالات..." aria-label="جستجوی سایت">
-                <button type="button" aria-label="جستجو"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <ul id="search-results-dropdown" style="display: none;">
-                    <li><a href="#">نتیجه ۱: مقاله نقاشی</a></li>
-                    <li><a href="#">نتیجه ۲: هنرمند جدید</a></li>
-                </ul>
-            </div>
-            
-            <button id="login-button" class="cta-button" data-lang-key="navLogin">ورود</button>
-            <button id="register-button" class="secondary-button" data-lang-key="navRegister">ثبت نام</button>
-
-            <button id="lang-toggle" class="control-btn" aria-label="تغییر زبان به انگلیسی">
-                <span data-lang-key="langToggleText">EN</span>
-            </button>
-            
-            <button id="mode-toggle" class="control-btn" aria-label="تغییر حالت نمایش">
-                <i id="mode-icon" class="fa-solid fa-moon"></i>
-            </button>
-
-            <button id="menu-toggle" class="control-btn" aria-label="باز کردن منو">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-        </div>
-    </header>
+<body>
     
-    <main>
-        
-        <section class="hero" id="home">
-            <div class="hero-content fade-in">
-                <h1 id="hero-title" data-lang-key="heroMainTitle" aria-live="polite">گنجینه فرهنگ و هنر: جامع‌ترین مرجع هنر ایران</h1>
-                <p data-lang-key="heroSubtitle">پلی میان گذشته و آینده هنر و ادبیات ایران. مکانی برای بازتاب زیبایی‌های اصیل و اشتراک‌گذاری آثار هنری.</p>
-                <div class="hero-action">
-                    <a href="#featured-slider" class="cta-button" data-lang-key="heroCTA">مشاهده آثار برگزیده</a>
+    <div id="page-loader">
+        <div class="loader-circle"></div>
+    </div>
+
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <header id="main-header">
+        <div class="container flex-row justify-between align-center">
+            <div class="logo-area">
+                <a href="/" class="logo" data-lang-key="logoTitle" aria-label="صفحه اصلی گنجینه هنر">گنجینه هنر</a>
+                <span class="logo-subtitle" data-lang-key="logoSubtitle">گنجینه ایران</span>
+            </div>
+
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="/" class="nav-link active" data-lang-key="navHome">خانه</a></li>
+                    <li><a href="#featured-slider" class="nav-link" data-lang-key="navFeatured">آثار ویژه</a></li>
+                    <li><a href="#articles" class="nav-link" data-lang-key="navArticles">مقالات</a></li>
+                    <li><a href="#about" class="nav-link" data-lang-key="navAbout">درباره ما</a></li>
+                    <li><a href="#contact" class="nav-link" data-lang-key="navContact">تماس با ما</a></li>
+                    <li><a href="#faq" class="nav-link" data-lang-key="navFAQ">سؤالات متداول</a></li>
+                </ul>
+            </nav>
+
+            <div class="control-area flex-row align-center">
+                <div class="search-box">
+                    <input type="text" id="search-input" data-lang-key="searchPlaceholder" placeholder="جستجوی آثار و مقالات..." aria-label="جستجو در سایت">
+                    <i class="fa-solid fa-search"></i>
                 </div>
                 
-                <div class="site-stats" data-lang-key="statsSection">
-                    <div class="stat-item fade-in" data-delay="200">
-                        <span class="stat-value" data-target="1500">+۱۵۰۰</span>
-                        <p data-lang-key="statArtworks">اثر ثبت شده</p>
+                <a href="/login" class="primary-button hidden-mobile" data-lang-key="navLogin">ورود</a>
+                <a href="/register" class="secondary-button hidden-mobile" data-lang-key="navRegister">ثبت نام</a>
+                
+                <button id="lang-toggle" aria-label="تغییر زبان به انگلیسی">
+                    <span data-lang-key="langToggleText">EN</span>
+                </button>
+                
+                <button id="theme-toggle" aria-label="تغییر حالت روشن/تاریک">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                
+                <button id="menu-toggle" class="mobile-only" aria-label="باز کردن منو">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <nav id="mobile-menu" class="mobile-only"></nav>
+    </header>
+
+    <main>
+        <section id="hero" class="text-center">
+            <div class="container">
+                <h1 data-lang-key="heroMainTitle" class="typewriter-text"></h1>
+                <p class="subtitle mt-3 mb-5" data-lang-key="heroSubtitle">پلی میان گذشته و آینده هنر و ادبیات ایران. مکانی برای بازتاب زیبایی‌های اصیل و اشتراک‌گذاری آثار هنری.</p>
+                <a href="#featured-slider" class="main-cta-button" data-lang-key="heroCTA">مشاهده آثار برگزیده <i class="fa-solid fa-arrow-down-long"></i></a>
+                
+                <div class="stats-bar mt-5">
+                    <div class="stat-item" data-delay="0.1">
+                        <span class="stat-number bounce-effect">+۱۵۰۰</span>
+                        <p data-lang-key="stat1">اثر ثبت شده</p>
                     </div>
-                    <div class="stat-item fade-in" data-delay="400">
-                        <span class="stat-value" data-target="350">۳۵۰</span>
-                        <p data-lang-key="statArtists">هنرمند فعال</p>
+                    <div class="stat-item" data-delay="0.2">
+                        <span class="stat-number bounce-effect">۳۵۰</span>
+                        <p data-lang-key="stat2">هنرمند فعال</p>
                     </div>
-                    <div class="stat-item fade-in" data-delay="600">
-                        <span class="stat-value" data-target="12">۱۲</span>
-                        <p data-lang-key="statCategories">دسته هنری</p>
+                    <div class="stat-item" data-delay="0.3">
+                        <span class="stat-number bounce-effect">۱۲</span>
+                        <p data-lang-key="stat3">دسته هنری</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="featured-slider" class="fade-in">
-            <div class="section-header">
-                <h2 data-lang-key="featuredTitle">آثار ویژه و منتخب هفته</h2>
-                <p data-lang-key="featuredSubtitle">برترین آثار هنرمندان برجسته ایرانی را مشاهده کنید.</p>
-            </div>
-
-            <div class="carousel-container">
-                <div class="carousel-track">
-                    <div class="carousel-item" data-index="0" style="background-image: url('images/slide-1-placeholder.jpg');">
-                        <div class="caption">
-                            <h3 data-lang-key="slide1Title">مینیاتور: سیمرغ افسانه‌ای</h3>
-                            <p data-lang-key="slide1Artist">اثر استاد فرخ امینی</p>
-                            <a href="#" data-lang-key="slideLink">مشاهده جزئیات</a>
+        <section id="featured-slider" class="py-5">
+            <div class="container">
+                <h2 class="section-title text-center mb-5" data-lang-key="featuredTitle">آثار ویژه و منتخب هفته</h2>
+                <p class="section-subtitle text-center mb-5" data-lang-key="featuredSubtitle">برترین آثار هنرمندان برجسته ایرانی را مشاهده کنید.</p>
+                
+                <div class="carousel-container">
+                    <div class="carousel-track flex-row" data-lang-key="carouselContent">
+                        <div class="art-card" data-index="0" data-delay="0.1">
+                            <div class="art-card-img-container">
+                                <img class="lazy-image" data-src="images/miniature-placeholder.jpg" alt="مینیاتور: سیمرغ افسانه‌ای" loading="lazy">
+                            </div>
+                            <div class="art-card-body">
+                                <h3>مینیاتور: سیمرغ افسانه‌ای</h3>
+                                <p class="artist">اثر استاد فرخ امینی</p>
+                                <a href="#" class="details-button" data-lang-key="viewDetails">مشاهده جزئیات</a>
+                            </div>
+                        </div>
+                        <div class="art-card" data-index="1" data-delay="0.2">
+                            <div class="art-card-img-container">
+                                <img class="lazy-image" data-src="images/calligraphy-placeholder.jpg" alt="خوشنویسی: شعر حافظ" loading="lazy">
+                            </div>
+                            <div class="art-card-body">
+                                <h3>خوشنویسی: شعر حافظ</h3>
+                                <p class="artist">اثر بانو سارا نوری</p>
+                                <a href="#" class="details-button" data-lang-key="viewDetails">مشاهده جزئیات</a>
+                            </div>
+                        </div>
+                        <div class="art-card" data-index="2" data-delay="0.3">
+                            <div class="art-card-img-container">
+                                <img class="lazy-image" data-src="images/architecture-placeholder.jpg" alt="معماری: پرسپولیس مدرن" loading="lazy">
+                            </div>
+                            <div class="art-card-body">
+                                <h3>معماری: پرسپولیس مدرن</h3>
+                                <p class="artist">طرح مهندس علیرضا کیانی</p>
+                                <a href="#" class="details-button" data-lang-key="viewDetails">مشاهده جزئیات</a>
+                            </div>
+                        </div>
+                        <div class="art-card" data-index="3" data-delay="0.4">
+                            <div class="art-card-img-container">
+                                <img class="lazy-image" data-src="images/sculpture-placeholder.jpg" alt="مجسمه سازی: رستم دستان" loading="lazy">
+                            </div>
+                            <div class="art-card-body">
+                                <h3>مجسمه سازی: رستم دستان</h3>
+                                <p class="artist">اثر کامران ناصری</p>
+                                <a href="#" class="details-button" data-lang-key="viewDetails">مشاهده جزئیات</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="carousel-item" data-index="1" style="background-image: url('images/slide-2-placeholder.jpg');">
-                        <div class="caption">
-                            <h3 data-lang-key="slide2Title">خوشنویسی: شعر حافظ</h3>
-                            <p data-lang-key="slide2Artist">اثر بانو سارا نوری</p>
-                            <a href="#" data-lang-key="slideLink">مشاهده جزئیات</a>
-                        </div>
-                    </div>
-                    <div class="carousel-item" data-index="2" style="background-image: url('images/slide-3-placeholder.jpg');">
-                        <div class="caption">
-                            <h3 data-lang-key="slide3Title">معماری: پرسپولیس مدرن</h3>
-                            <p data-lang-key="slide3Artist">طرح مهندس علیرضا کیانی</p>
-                            <a href="#" data-lang-key="slideLink">مشاهده جزئیات</a>
-                        </div>
-                    </div>
-                </div>
-                <button class="prev-button" aria-label="اسلاید قبلی"><i class="fa-solid fa-chevron-right"></i></button>
-                <button class="next-button" aria-label="اسلاید بعدی"><i class="fa-solid fa-chevron-left"></i></button>
-                <div class="carousel-dots">
-                    <button class="carousel-dot active" data-index="0" aria-label="برو به اسلاید ۱"></button>
-                    <button class="carousel-dot" data-index="1" aria-label="برو به اسلاید ۲"></button>
-                    <button class="carousel-dot" data-index="2" aria-label="برو به اسلاید ۳"></button>
+                    <button class="carousel-control prev" aria-label="اسلاید قبلی"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="carousel-control next" aria-label="اسلاید بعدی"><i class="fa-solid fa-chevron-left"></i></button>
                 </div>
             </div>
         </section>
 
-        <section id="articles" class="fade-in">
-            <div class="section-header">
-                <h2 data-lang-key="articlesTitle">آخرین مقالات تخصصی</h2>
-                <p data-lang-key="articlesSubtitle">مقالات عمیق و تحلیلی در زمینه‌های مختلف هنر و فرهنگ ایران.</p>
-            </div>
-            
-            <div class="gallery-controls">
-                <div class="filter-group">
-                    <label for="category-filter" data-lang-key="filterLabel">فیلتر بر اساس:</label>
-                    <select id="category-filter" data-lang-key="filterAll">
-                        <option value="all">همه دسته‌ها</option>
-                        <option value="painting">نقاشی</option>
-                        <option value="literature">ادبیات</option>
-                        <option value="architecture">معماری</option>
-                    </select>
+        <section id="articles" class="py-5 bg-light-section">
+            <div class="container">
+                <h2 class="section-title text-center mb-5" data-lang-key="articlesTitle">آخرین مقالات تخصصی</h2>
+                <p class="section-subtitle text-center mb-5" data-lang-key="articlesSubtitle">مقالات عمیق و تحلیلی در زمینه‌های مختلف هنر و فرهنگ ایران.</p>
+                
+                <div class="filter-bar flex-row justify-between align-center mb-4">
+                    <div class="filter-group">
+                        <span data-lang-key="filterBy">فیلتر بر اساس:</span>
+                        <select id="category-filter" aria-label="فیلتر بر اساس دسته بندی">
+                            <option value="all" data-lang-key="catAll">همه دسته‌ها</option>
+                            <option value="painting" data-lang-key="catPainting">نقاشی</option>
+                            <option value="literature" data-lang-key="catLiterature">ادبیات</option>
+                            <option value="architecture" data-lang-key="catArchitecture">معماری</option>
+                            <option value="calligraphy" data-lang-key="catCalligraphy">خوشنویسی</option>
+                        </select>
+                    </div>
+                    <div class="sort-group">
+                        <span data-lang-key="sortBy">مرتب‌سازی:</span>
+                        <select id="sort-order" aria-label="مرتب سازی بر اساس">
+                            <option value="newest" data-lang-key="sortNewest">جدیدترین</option>
+                            <option value="popular" data-lang-key="sortPopular">پر بازدیدترین</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="sort-group">
-                    <label for="sort-by" data-lang-key="sortLabel">مرتب‌سازی:</label>
-                    <select id="sort-by" data-lang-key="sortByDate">
-                        <option value="date">جدیدترین</option>
-                        <option value="views">پر بازدیدترین</option>
-                    </select>
+                
+                <div class="row" id="articles-list">
+                    
+                    <div class="col-md-4 mb-4 article-card article-painting" data-category="painting" data-views="2500" data-delay="0.1">
+                        <img class="lazy-image" data-src="images/article-1-placeholder.jpg" alt="تاثیر شاهنامه بر هنر مینیاتور ایرانی" loading="lazy">
+                        <div class="article-body">
+                            <h3 data-lang-key="article1Title">تاثیر شاهنامه بر هنر مینیاتور ایرانی</h3>
+                            <p data-lang-key="article1Excerpt">بررسی چگونگی الهام‌گیری هنرمندان از داستان‌های حماسی فردوسی در نگارگری...</p>
+                            <a href="#" class="read-more" data-lang-key="readMore">ادامه مطلب</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4 article-card article-architecture" data-category="architecture" data-views="1800" data-delay="0.2">
+                        <img class="lazy-image" data-src="images/article-2-placeholder.jpg" alt="مکتب اصفهان در معماری اسلامی" loading="lazy">
+                        <div class="article-body">
+                            <h3 data-lang-key="article2Title">مکتب اصفهان در معماری اسلامی</h3>
+                            <p data-lang-key="article2Excerpt">مروری بر ویژگی‌های منحصر به فرد معماری صفوی و شاهکارهای اصفهان...</p>
+                            <a href="#" class="read-more" data-lang-key="readMore">ادامه مطلب</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4 article-card article-literature" data-category="literature" data-views="1500" data-delay="0.3">
+                        <img class="lazy-image" data-src="images/article-3-placeholder.jpg" alt="نقش موسیقی مقامی در فرهنگ بختیاری" loading="lazy">
+                        <div class="article-body">
+                            <h3 data-lang-key="article3Title">نقش موسیقی مقامی در فرهنگ بختیاری</h3>
+                            <p data-lang-key="article3Excerpt">تحلیل ساختار آوازی و تأثیرات اجتماعی موسیقی‌های محلی ایران...</p>
+                            <a href="#" class="read-more" data-lang-key="readMore">ادامه مطلب</a>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="text-center mt-5">
+                    <a href="/articles" class="primary-button large-button" data-lang-key="viewMoreArticles">مشاهده مقالات بیشتر</a>
                 </div>
             </div>
-            
-            <ul class="articles-grid">
-                <li class="article-summary card fade-in" data-delay="100">
-                    <img src="images/article-1-placeholder.jpg" alt="تاثیر شاهنامه بر هنر مینیاتور ایرانی">
-                    <h3>تاثیر شاهنامه بر هنر مینیاتور ایرانی</h3>
-                    <p data-lang-key="article1Excerpt">بررسی چگونگی الهام‌گیری هنرمندان از داستان‌های حماسی فردوسی در نگارگری...</p>
-                    <a href="#" data-lang-key="readMore">ادامه مطلب <i class="fa-solid fa-arrow-left"></i></a>
-                </li>
-                 <li class="article-summary card fade-in" data-delay="200">
-                    <img src="images/article-2-placeholder.jpg" alt="مکتب اصفهان در معماری اسلامی">
-                    <h3>مکتب اصفهان در معماری اسلامی</h3>
-                    <p data-lang-key="article2Excerpt">مروری بر ویژگی‌های منحصر به فرد معماری صفوی و شاهکارهای اصفهان...</p>
-                    <a href="#" data-lang-key="readMore">ادامه مطلب <i class="fa-solid fa-arrow-left"></i></a>
-                </li>
-                <li class="article-summary card fade-in" data-delay="300">
-                    <img src="images/article-3-placeholder.jpg" alt="نقش موسیقی مقامی در فرهنگ بختیاری">
-                    <h3>نقش موسیقی مقامی در فرهنگ بختیاری</h3>
-                    <p data-lang-key="article3Excerpt">تحلیل ساختار آوازی و تأثیرات اجتماعی موسیقی‌های محلی ایران...</p>
-                    <a href="#" data-lang-key="readMore">ادامه مطلب <i class="fa-solid fa-arrow-left"></i></a>
-                </li>
-            </ul>
-            
-            <button id="load-more" class="secondary-button" data-lang-key="loadMoreButton">مشاهده مقالات بیشتر</button>
         </section>
 
-        <section id="about" class="fade-in">
-            <div class="content-wrapper" data-lang-key="aboutSection">
-                <div class="section-header">
-                    <h2 data-lang-key="aboutTitle">درباره گنجینه فرهنگ و هنر</h2>
+        <section id="testimonials" class="py-5">
+            <div class="container">
+                <h2 class="section-title text-center mb-5" data-lang-key="testimonialsTitle">نظرات کاربران برجسته</h2>
+                <div class="row-grid grid-3">
+                    <div class="testimonial-card" data-delay="0.1">
+                        <div class="rating">★★★★★</div>
+                        <p data-lang-key="testimonial1Content">"این سایت یک مرجع بی‌نظیر برای تحقیق در مورد هنر ایران است. سرعت بارگذاری و دقت مقالات فوق‌العاده است."</p>
+                        <p class="reviewer" data-lang-key="testimonial1Name">دکتر ن. احمدی، پژوهشگر تاریخ هنر</p>
+                    </div>
+                    <div class="testimonial-card" data-delay="0.2">
+                        <div class="rating">★★★★★</div>
+                        <p data-lang-key="testimonial2Content">"بهترین پلتفرمی که برای نمایش آثارم پیدا کرده‌ام. تیم پشتیبانی بسیار حرفه‌ای و دلسوز هستند."</p>
+                        <p class="reviewer" data-lang-key="testimonial2Name">سارا نوری، هنرمند خوشنویس</p>
+                    </div>
+                    <div class="testimonial-card" data-delay="0.3">
+                        <div class="rating">★★★★★</div>
+                        <p data-lang-key="testimonial3Content">"به عنوان یک دانشجوی معماری، این مجموعه مقالات تخصصی، منبع اصلی من برای پروژه‌های دانشگاهی است."</p>
+                        <p class="reviewer" data-lang-key="testimonial3Name">علیرضا کیانی، دانشجوی معماری</p>
+                    </div>
                 </div>
-                <p data-lang-key="aboutP1">ما با هدف جمع‌آوری و نمایش جامع‌ترین آثار هنری و فرهنگی ایران، این پلتفرم را بنیان نهادیم. مأموریت ما حمایت از هنرمندان داخلی و معرفی غنای فرهنگی ایران به جهان است. ما یک مرجع تخصصی برای دانشجویان، پژوهشگران و علاقه‌مندان به هنر هستیم.</p>
-                <p data-lang-key="aboutP2">تیم ما متشکل از متخصصان هنر، تاریخ و فناوری است که متعهد به ارائه یک تجربه کاربری بی‌نقص و محتوای دقیق و معتبر هستند.</p>
+            </div>
+        </section>
+
+        <section id="about" class="py-5 bg-light-section">
+            <div class="container text-center">
+                <h2 class="section-title mb-4" data-lang-key="aboutTitle">درباره گنجینه فرهنگ و هنر</h2>
+                <p class="mb-4 text-max-width-700 mx-auto" data-lang-key="aboutContent1">ما با هدف جمع‌آوری و نمایش جامع‌ترین آثار هنری و فرهنگی ایران، این پلتفرم را بنیان نهادیم. مأموریت ما حمایت از هنرمندان داخلی و معرفی غنای فرهنگی ایران به جهان است.</p>
+                <p class="mb-5 text-max-width-700 mx-auto" data-lang-key="aboutContent2">تیم ما متشکل از متخصصان هنر، تاریخ و فناوری است که متعهد به ارائه یک تجربه کاربری بی‌نقص و محتوای دقیق و معتبر هستند. ما یک مرجع تخصصی برای دانشجویان، پژوهشگران و علاقه‌مندان به هنر هستیم.</p>
                 <a href="/team" class="secondary-button" data-lang-key="aboutTeamLink">آشنایی با تیم ما</a>
             </div>
         </section>
+
+        <section id="contact" class="py-5">
+            <div class="container">
+                <h2 class="section-title text-center mb-5" data-lang-key="contactTitle">ارسال نظر و تماس با ما</h2>
+                <div class="row-grid grid-2">
+                    <div class="contact-info">
+                        <p class="contact-pitch mb-4" data-lang-key="contactPitch">ما مشتاق شنیدن نظرات، پیشنهادات و انتقادات شما هستیم. از طریق فرم زیر یا راه‌های ارتباطی با ما تماس بگیرید.</p>
+                        <p><i class="fa-solid fa-location-dot accent-color"></i> <strong data-lang-key="footerAddress">آدرس:</strong> تهران، خیابان هنر، پلاک ۱۰</p>
+                        <p><i class="fa-solid fa-envelope accent-color"></i> <strong data-lang-key="footerEmail">ایمیل:</strong> <a href="mailto:info@yourwebsite.com">info@yourwebsite.com</a></p>
+                        <p><i class="fa-solid fa-phone accent-color"></i> <strong data-lang-key="footerPhone">تلفن:</strong> <a href="tel:+982112345678">(۸۷۶۵۴۳۲۱) ۰۲۱</a></p>
+                    </div>
+                    
+                    <form id="contact-form" class="form-container elevation-3" novalidate>
+                        <h3 data-lang-key="contactFormTitle">فرم تماس</h3>
+
+                        <div class="form-group">
+                            <label for="full-name" data-lang-key="formLabelName">نام و نام خانوادگی:</label>
+                            <input type="text" id="full-name" name="full-name" required aria-required="true">
+                            <div class="error-message" id="full-name-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" data-lang-key="formLabelEmail">ایمیل:</label>
+                            <input type="email" id="email" name="email" required aria-required="true">
+                            <div class="error-message" id="email-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone-number" data-lang-key="formLabelPhone">شماره تلفن (اختیاری):</label>
+                            <input type="tel" id="phone-number" name="phone-number" placeholder="مثال: ۰۹۱۲۳۴۵۶۷۸۹">
+                            <div class="error-message" id="phone-number-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message" data-lang-key="formLabelMessage">پیام:</label>
+                            <textarea id="message" name="message" rows="4" required aria-required="true"></textarea>
+                            <div class="error-message" id="message-error"></div>
+                        </div>
+                        
+                        <div class="form-group captcha-group flex-row justify-between align-center">
+                            <label for="captcha-input" data-lang-key="formLabelCaptcha">کد امنیتی:</label>
+                            <span id="captcha-display" class="captcha-text">۹۵۷۴</span>
+                            <input type="text" id="captcha-input" name="captcha-input" required aria-required="true" placeholder="پاسخ را وارد کنید">
+                            <div class="error-message" id="captcha-error"></div>
+                        </div>
+
+                        <button type="submit" class="submit-button" data-lang-key="formSubmit">ارسال پیام</button>
+                    </form>
+                </div>
+            </div>
+        </section>
         
-        <section id="contact" class="fade-in">
-            <div class="section-header">
-                <h2 data-lang-key="contactTitle">ارسال نظر و تماس با ما</h2>
-                <p data-lang-key="contactSubtitle">ما مشتاق شنیدن نظرات، پیشنهادات و انتقادات شما هستیم.</p>
+        <div id="otp-modal" class="modal-overlay">
+            <div class="modal-content">
+                <h3 data-lang-key="otpTitle">تأیید شماره تلفن</h3>
+                <p data-lang-key="otpMessage">کد ۴ رقمی به شماره <span id="otp-phone-number"></span> ارسال شد.</p>
+                <input type="text" id="otp-code" placeholder="کد تأیید (مثال: ۱۲۳۴)" maxlength="4">
+                <div class="error-message" id="otp-error"></div>
+                <button id="otp-verify-button" class="primary-button" data-lang-key="otpVerify">تأیید</button>
+                <button id="otp-close-button" class="secondary-button mt-2" data-lang-key="otpClose">بستن</button>
             </div>
-            
-            <form id="contact-form" class="contact-form">
-                <h3 data-lang-key="formHeader">فرم تماس</h3>
+        </div>
 
-                <div id="form-status" style="display: none;"></div>
-
-                <div class="form-group">
-                    <label for="contact-name" class="sr-only" data-lang-key="labelName">نام و نام خانوادگی:</label>
-                    <input type="text" id="contact-name" name="name" required data-lang-key="placeholderName" placeholder="نام و نام خانوادگی" aria-required="true">
-                    <span class="error-message" id="name-error"></span>
-                </div>
+        <section id="faq" class="py-5 bg-light-section">
+            <div class="container text-center">
+                <h2 class="section-title mb-5" data-lang-key="faqTitle">سؤالات متداول</h2>
                 
-                <div class="form-group">
-                    <label for="contact-email" class="sr-only" data-lang-key="labelEmail">ایمیل:</label>
-                    <input type="email" id="contact-email" name="email" required data-lang-key="placeholderEmail" placeholder="ایمیل معتبر" aria-required="true">
-                    <span class="error-message" id="email-error"></span>
-                </div>
+                <div class="faq-accordion text-left">
+                    
+                    <div class="faq-item">
+                        <button class="faq-question" data-lang-key="faq1Q" aria-expanded="false" aria-controls="faq1A">
+                            چگونه می‌توانم اثر هنری خود را در گنجینه ثبت کنم؟ <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer" id="faq1A" data-lang-key="faq1A">
+                            برای ثبت اثر، ابتدا باید در سایت ثبت نام کرده و وارد پنل کاربری خود شوید. سپس از طریق بخش "ارسال اثر جدید"، اطلاعات و تصاویر اثر خود را بارگذاری کنید. آثار توسط تیم کارشناسی ما بررسی و در صورت تأیید، منتشر خواهند شد.
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="contact-message" class="sr-only" data-lang-key="labelMessage">پیام:</label>
-                    <textarea id="contact-message" name="message" rows="5" required data-lang-key="placeholderMessage" placeholder="پیام شما..." aria-required="true"></textarea>
-                    <span class="error-message" id="message-error"></span>
+                    <div class="faq-item">
+                        <button class="faq-question" data-lang-key="faq2Q" aria-expanded="false" aria-controls="faq2A">
+                            آیا محتوای سایت به زبان‌های دیگر هم ترجمه می‌شود؟ <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer" id="faq2A" data-lang-key="faq2A">
+                            بله، وب‌سایت ما کاملاً مجهز به قابلیت چندزبانه (i18n) است و می‌توانید با کلیک روی دکمه EN/FA در بالای صفحه، محتوا را به زبان انگلیسی یا فارسی مشاهده کنید.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" data-lang-key="faq3Q" aria-expanded="false" aria-controls="faq3A">
+                            آیا ثبت‌نام هنرمندان رایگان است؟ <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer" id="faq3A" data-lang-key="faq3A">
+                            ثبت‌نام و ایجاد پروفایل هنرمندی کاملاً رایگان است. ما از هنر شما حمایت می‌کنیم. در حال حاضر هیچ هزینه اشتراکی برای نمایش آثار دریافت نمی‌شود.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" data-lang-key="faq4Q" aria-expanded="false" aria-controls="faq4A">
+                            سیاست حفظ حریم خصوصی شما چگونه است؟ <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer" id="faq4A" data-lang-key="faq4A">
+                            ما متعهد به حفظ اطلاعات شخصی کاربران هستیم. تمام داده‌ها بر اساس استانداردهای بین‌المللی رمزگذاری و ذخیره می‌شوند. برای جزئیات بیشتر، لطفاً به صفحه <a href="/privacy-policy" data-lang-key="privacyPolicyLink">سیاست حفظ حریم خصوصی</a> مراجعه کنید.
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question" data-lang-key="faq5Q" aria-expanded="false" aria-controls="faq5A">
+                            چگونه می‌توانم گزارش تخلف یا کپی رایت را ارسال کنم؟ <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer" id="faq5A" data-lang-key="faq5A">
+                            لطفاً با استفاده از فرم تماس (بخش بالا) یا ایمیل مستقیم، جزئیات اثر و دلیل تخلف را برای ما ارسال کنید. تیم حقوقی ما در اسرع وقت موضوع را بررسی و پیگیری خواهد کرد.
+                        </div>
+                    </div>
+                    
                 </div>
+            </div>
+        </section>
+        
+        <section id="newsletter" class="py-5 bg-accent-section">
+            <div class="container text-center">
+                <h2 class="section-title-white mb-3" data-lang-key="newsletterTitle">عضویت در خبرنامه</h2>
+                <p class="section-subtitle-white mb-4" data-lang-key="newsletterSubtitle">جدیدترین آثار و مقالات را مستقیماً در ایمیل خود دریافت کنید.</p>
                 
-                <div class="form-group captcha-group">
-                    <label for="captcha-input" class="sr-only" data-lang-key="labelCaptcha">کد امنیتی:</label>
-                    <input type="text" id="captcha-input" name="captcha" required data-lang-key="placeholderCaptcha" placeholder="کد امنیتی را وارد کنید" aria-required="true">
-                    <span id="captcha-display">۹۵۷۴</span> <span class="error-message" id="captcha-error"></span>
-                </div>
-
-                <button type="submit" class="cta-button" data-lang-key="formSubmitButton">ارسال پیام</button>
-            </form>
-        </section>
-
-        <section id="faq" class="fade-in">
-            <div class="section-header">
-                <h2 data-lang-key="faqTitle">سؤالات متداول</h2>
-                <p data-lang-key="faqSubtitle">پاسخ‌هایی برای پرتکرارترین سؤالات شما.</p>
-            </div>
-            
-            <div class="faq-accordion">
-                <details class="faq-item fade-in" open>
-                    <summary data-lang-key="faqQ1">چگونه می‌توانم اثر هنری خود را در گنجینه ثبت کنم؟</summary>
-                    <div class="faq-content" data-lang-key="faqA1">
-                        <p>برای ثبت اثر، ابتدا باید در سایت ثبت نام کرده و وارد پنل کاربری خود شوید. سپس از طریق بخش "ارسال اثر جدید"، اطلاعات و تصاویر اثر خود را بارگذاری کنید. آثار توسط تیم کارشناسی ما بررسی و در صورت تأیید، منتشر خواهند شد.</p>
+                <form id="newsletter-form" class="mx-auto" novalidate>
+                    <div class="newsletter-group">
+                        <input type="email" id="newsletter-email" name="email" data-lang-key="newsletterPlaceholder" placeholder="ایمیل خود را وارد کنید..." required aria-required="true">
+                        <button type="submit" class="submit-button" data-lang-key="newsletterSubmit">عضویت</button>
                     </div>
-                </details>
-                <details class="faq-item fade-in">
-                    <summary data-lang-key="faqQ2">آیا محتوای سایت به زبان‌های دیگر هم ترجمه می‌شود؟</summary>
-                    <div class="faq-content" data-lang-key="faqA2">
-                        <p>بله، وب‌سایت ما کاملاً مجهز به قابلیت چندزبانه (i18n) است و می‌توانید با کلیک روی دکمه EN در بالای صفحه، محتوا را به صورت کامل به زبان انگلیسی مشاهده کنید. (این قابلیت در فایل script.js پیاده‌سازی خواهد شد).</p>
-                    </div>
-                </details>
-                <details class="faq-item fade-in">
-                    <summary data-lang-key="faqQ3">آیا ثبت‌نام هنرمندان رایگان است؟</summary>
-                    <div class="faq-content" data-lang-key="faqA3">
-                        <p>ثبت‌نام و ایجاد پروفایل هنرمندی کاملاً رایگان است. ما از هنر شما حمایت می‌کنیم. در حال حاضر هیچ هزینه اشتراکی برای نمایش آثار دریافت نمی‌شود.</p>
-                    </div>
-                </details>
+                    <div class="error-message mt-2" id="newsletter-email-error"></div>
+                </form>
             </div>
-        </section>
-
-        <section id="newsletter" class="fade-in">
-            <div class="section-header">
-                <h2 data-lang-key="newsletterTitle">عضویت در خبرنامه</h2>
-                <p data-lang-key="newsletterSubtitle">جدیدترین آثار و مقالات را مستقیماً در ایمیل خود دریافت کنید.</p>
-            </div>
-            <form id="newsletter-form" class="newsletter-form">
-                 <div class="form-group">
-                    <label for="newsletter-email" class="sr-only" data-lang-key="labelEmail">ایمیل:</label>
-                    <input type="email" id="newsletter-email" name="email" required data-lang-key="placeholderEmail" placeholder="ایمیل خود را وارد کنید" aria-required="true">
-                    <span class="error-message" id="newsletter-email-error"></span>
-                </div>
-                <button type="submit" class="cta-button" data-lang-key="newsletterSubmitButton">عضویت</button>
-            </form>
         </section>
 
     </main>
 
-    <footer>
-        <div class="footer-grid">
+    <footer id="main-footer" class="py-5">
+        <div class="container footer-grid">
             
-            <div class="footer-col about-col">
-                <h3 data-lang-key="footerAboutTitle">گنجینه هنر</h3>
+            <div class="footer-col footer-branding">
+                <h3 data-lang-key="logoTitle" class="footer-logo">گنجینه هنر</h3>
                 <p data-lang-key="footerMission">ما بزرگ‌ترین آرشیو آنلاین هنر ایرانی هستیم که پل ارتباطی میان هنرمندان و جامعه جهانی ایجاد می‌کنیم.</p>
-                <div class="social-links">
-                    <a href="#" aria-label="اینستاگرام"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" aria-label="تلگرام"><i class="fa-brands fa-telegram"></i></a>
-                    <a href="#" aria-label="ایکس (توییتر)"><i class="fa-brands fa-x-twitter"></i></a>
+                <div class="social-links mt-3">
+                    <a href="https://instagram.com" target="_blank" aria-label="اینستاگرام گنجینه هنر"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://twitter.com" target="_blank" aria-label="توییتر گنجینه هنر"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="https://linkedin.com" target="_blank" aria-label="لینکدین گنجینه هنر"><i class="fa-brands fa-linkedin"></i></a>
                 </div>
             </div>
 
-            <div class="footer-col links-col">
-                <h3 data-lang-key="footerLinksTitle">لینک‌های سریع</h3>
+            <div class="footer-col">
+                <h4 data-lang-key="footerQuickLinks">لینک‌های سریع</h4>
                 <ul>
                     <li><a href="#about" data-lang-key="navAbout">درباره ما</a></li>
                     <li><a href="#articles" data-lang-key="navArticles">مقالات</a></li>
-                    <li><a href="#faq" data-lang-key="navFAQ">سوالات متداول</a></li>
-                    <li><a href="/privacy-policy" data-lang-key="navPrivacy">سیاست حفظ حریم خصوصی</a></li>
-                    <li><a href="/terms-of-service" data-lang-key="navTerms">شرایط استفاده از خدمات</a></li>
+                    <li><a href="#faq" data-lang-key="navFAQ">سؤالات متداول</a></li>
+                    <li><a href="/privacy-policy" data-lang-key="footerPrivacy">سیاست حفظ حریم خصوصی</a></li>
+                    <li><a href="/terms-of-service" data-lang-key="footerTerms">شرایط استفاده از خدمات</a></li>
                 </ul>
             </div>
 
-            <div class="footer-col map-contact-col">
-                <h3 data-lang-key="footerContactTitle">تماس و نقشه سایت</h3>
-                <address>
+            <div class="footer-col footer-contact">
+                <h4 data-lang-key="footerContact">تماس و نقشه سایت</h4>
+                <address class="not-italic">
                     <p data-lang-key="footerAddress"><i class="fa-solid fa-location-dot"></i> آدرس: تهران، خیابان هنر، پلاک ۱۰</p>
                     <p data-lang-key="footerEmail"><i class="fa-solid fa-envelope"></i> ایمیل: <a href="mailto:info@yourwebsite.com">info@yourwebsite.com</a></p>
                     <p data-lang-key="footerPhone"><i class="fa-solid fa-phone"></i> تلفن: <a href="tel:+982112345678">(۸۷۶۵۴۳۲۱) ۰۲۱</a></p>
@@ -317,15 +414,14 @@
 
         <div class="footer-bottom">
             <p data-lang-key="footerCopyright">© <span id="current-year">2025</span> گنجینه فرهنگ و هنر - تمامی حقوق محفوظ است.</p>
-            <p data-lang-key="footerDesign">طراحی و توسعه با <span style="color: #d9534f;">❤️</span> برای ترویج فرهنگ ایران.</p>
+            <p data-lang-key="footerDesign">طراحی و توسعه با <span style="color: var(--color-danger);">❤️</span> برای ترویج فرهنگ ایران.</p>
         </div>
     </footer>
 
     <button id="back-to-top" aria-label="بازگشت به بالای صفحه" style="display: none;">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20"><path d="M246.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L224 109.3 361.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160zM224 288a32 32 0 1 0 0 64h176c17.7 0 32 14.3 32 32s-14.3 32-32 32H224a32 32 0 1 0 0 64H400c53 0 96-43 96-96V384c0-53-43-96-96-96H224z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20"><path d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z" fill="currentColor"/></svg>
     </button>
-
-
+    
     <script src="script.js"></script>
 </body>
 </html>
