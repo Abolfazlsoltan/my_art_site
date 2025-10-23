@@ -1,718 +1,836 @@
 /*
 ==================================================
-  گنجینه فرهنگ و هنر - فایل Script.js
-  منطق پیشرفته، امنیت، i18n، و تعاملات UX/UI
+  گنجینه فرهنگ و هنر - فایل Script.js (ماژولار و پیشرفته)
+  شامل: Module Pattern, Lazy Loading, Advanced Filtering, & Security Enhancements
 ==================================================
 */
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // --------------------------------------------------
+    // توابع کمکی عمومی
+    // --------------------------------------------------
     const $ = selector => document.querySelector(selector);
     const $$ = selector => document.querySelectorAll(selector);
-
     const html = $('html');
     const body = $('body');
-    let currentLang = html.getAttribute('lang') || 'fa';
-    
+
     // --------------------------------------------------
     // ۱. داده‌های چندزبانه سازی (i18n Data)
     // --------------------------------------------------
     const I18N_DATA = {
         fa: {
-            // متادیتا
-            pageTitle: "خانه | گنجینه فرهنگ و هنر - جامع‌ترین مرجع هنر ایران",
-            metaDescription: "گنجینه فرهنگ و هنر، پلی میان گذشته و آینده هنر و ادبیات ایران. مکانی برای بازتاب زیبایی‌های اصیل، مقالات تخصصی، و ثبت نام هنرمندان.",
-            // ناوبری و هدر
-            logoTitle: "گنجینه هنر",
-            navHome: "خانه", navFeatured: "آثار ویژه", navArticles: "مقالات", navAbout: "درباره ما", navContact: "تماس با ما", navFAQ: "سؤالات متداول",
-            navLogin: "ورود", navRegister: "ثبت نام",
-            searchPlaceholder: "جستجوی آثار و مقالات...",
-            langToggleText: "EN",
-            // هیرو
-            heroMainTitle: "گنجینه فرهنگ و هنر: جامع‌ترین مرجع هنر ایران",
-            heroSubtitle: "پلی میان گذشته و آینده هنر و ادبیات ایران. مکانی برای بازتاب زیبایی‌های اصیل و اشتراک‌گذاری آثار هنری.",
-            heroCTA: "مشاهده آثار برگزیده",
-            // آمار
-            statArtworks: "اثر ثبت شده", statArtists: "هنرمند فعال", statCategories: "دسته هنری",
-            // اسلایدر (نمونه)
-            featuredTitle: "آثار ویژه و منتخب هفته", featuredSubtitle: "برترین آثار هنرمندان برجسته ایرانی را مشاهده کنید.",
-            slideLink: "مشاهده جزئیات",
-            // مقالات و فیلتر
-            articlesTitle: "آخرین مقالات تخصصی", articlesSubtitle: "مقالات عمیق و تحلیلی در زمینه‌های مختلف هنر و فرهنگ ایران.",
-            filterLabel: "فیلتر بر اساس:", filterAll: "همه دسته‌ها", sortLabel: "مرتب‌سازی:", sortByDate: "جدیدترین", 
-            readMore: "ادامه مطلب", loadMoreButton: "مشاهده مقالات بیشتر",
-            // درباره ما
-            aboutTitle: "درباره گنجینه فرهنگ و هنر", aboutP1: "ما با هدف جمع‌آوری و نمایش جامع‌ترین آثار هنری و فرهنگی ایران، این پلتفرم را بنیان نهادیم...",
-            aboutP2: "تیم ما متشکل از متخصصان هنر، تاریخ و فناوری است که متعهد به ارائه یک تجربه کاربری بی‌نقص و محتوای دقیق و معتبر هستند.",
-            aboutTeamLink: "آشنایی با تیم ما",
-            // تماس با ما و فرم
-            contactTitle: "ارسال نظر و تماس با ما", contactSubtitle: "ما مشتاق شنیدن نظرات، پیشنهادات و انتقادات شما هستیم.",
-            formHeader: "فرم تماس",
-            placeholderName: "نام و نام خانوادگی", placeholderEmail: "ایمیل معتبر", placeholderMessage: "پیام شما...",
-            placeholderCaptcha: "کد امنیتی را وارد کنید", formSubmitButton: "ارسال پیام",
-            // خطاها و پیام‌های سیستم
-            errorNameRequired: "وارد کردن نام الزامی است.", errorEmailInvalid: "لطفاً یک آدرس ایمیل معتبر وارد کنید.", 
-            errorMessageRequired: "لطفاً پیام خود را وارد کنید.", errorCaptcha: "کد امنیتی وارد شده صحیح نیست.",
-            successMessage: "✅ پیام شما با موفقیت ارسال شد. از شما متشکریم.",
-            errorSystem: "❌ خطایی در ارسال پیام رخ داد. لطفاً دوباره تلاش کنید.",
-            // خبرنامه
-            newsletterTitle: "عضویت در خبرنامه", newsletterSubtitle: "جدیدترین آثار و مقالات را مستقیماً در ایمیل خود دریافت کنید.",
-            newsletterSubmitButton: "عضویت",
-            // فوتر
-            footerAboutTitle: "گنجینه هنر", footerMission: "ما بزرگ‌ترین آرشیو آنلاین هنر ایرانی هستیم که پل ارتباطی میان هنرمندان و جامعه جهانی ایجاد می‌کنیم.",
-            footerLinksTitle: "لینک‌های سریع", navPrivacy: "سیاست حفظ حریم خصوصی", navTerms: "شرایط استفاده از خدمات",
-            footerContactTitle: "تماس و نقشه سایت", footerAddress: "آدرس: تهران، خیابان هنر، پلاک ۱۰",
-            footerEmail: "ایمیل:", footerPhone: "تلفن:", footerSitemapLink: "مشاهده نقشه سایت (XML)",
-            footerCopyright: "© ۲۰۲۵ گنجینه فرهنگ و هنر - تمامی حقوق محفوظ است.", footerDesign: "طراحی و توسعه با ❤️ برای ترویج فرهنگ ایران.",
-            // ورود و ثبت نام (Modal)
-            modalLoginTitle: "ورود به حساب کاربری", modalRegisterTitle: "ایجاد حساب کاربری جدید",
-            loginButton: "ورود", registerButton: "ثبت نام",
-            registerHelp: "با ثبت نام، شما شرایط خدمات ما را می‌پذیرید.",
-            placeholderPassword: "گذرواژه", placeholderPhone: "شماره تلفن (اختیاری)",
-            forgotPassword: "رمز عبور را فراموش کرده‌اید؟",
-            passwordSuggestButton: "پیشنهاد گذرواژه قوی",
-            passwordSuggested: "گذرواژه زیر به کلیپ‌بورد کپی شد. لطفاً آن را ذخیره کنید:",
-            errorPhoneInvalid: "شماره تلفن وارد شده معتبر نیست. (فرمت: 09xx xxx xx xx)",
-            // تأیید تلفن
-            verifyPhoneTitle: "تأیید شماره تلفن", verifyPhoneCode: "کد تأیید به شماره شما ارسال شد.",
-            placeholderVerificationCode: "کد تأیید ۴ رقمی", verifyButton: "تأیید",
+            pageTitle: "خانه | گنجینه فرهنگ و هنر - جامع‌ترین مرجع هنر ایران", metaDescription: "گنجینه فرهنگ و هنر، پلی میان گذشته و آینده هنر و ادبیات ایران. مکانی برای بازتاب زیبایی‌های اصیل، مقالات تخصصی، و ثبت نام هنرمندان.", logoTitle: "گنجینه هنر", logoSubtitle: "گنجینه ایران",
+            navHome: "خانه", navFeatured: "آثار ویژه", navArticles: "مقالات", navAbout: "درباره ما", navContact: "تماس با ما", navFAQ: "سؤالات متداول", navLogin: "ورود", navRegister: "ثبت نام", searchPlaceholder: "جستجوی آثار و مقالات...", langToggleText: "EN",
+            heroMainTitle: "گنجینه فرهنگ و هنر: جامع‌ترین مرجع هنر ایران", heroSubtitle: "پلی میان گذشته و آینده هنر و ادبیات ایران. مکانی برای بازتاب زیبایی‌های اصیل و اشتراک‌گذاری آثار هنری.", heroCTA: "مشاهده آثار برگزیده",
+            stat1: "اثر ثبت شده", stat2: "هنرمند فعال", stat3: "دسته هنری",
+            featuredTitle: "آثار ویژه و منتخب هفته", featuredSubtitle: "برترین آثار هنرمندان برجسته ایرانی را مشاهده کنید.", viewDetails: "مشاهده جزئیات",
+            articlesTitle: "آخرین مقالات تخصصی", articlesSubtitle: "مقالات عمیق و تحلیلی در زمینه‌های مختلف هنر و فرهنگ ایران.", filterBy: "فیلتر بر اساس:", sortBy: "مرتب‌سازی:", catAll: "همه دسته‌ها", catPainting: "نقاشی", catLiterature: "ادبیات", catArchitecture: "معماری", catCalligraphy: "خوشنویسی", sortNewest: "جدیدترین", sortPopular: "پر بازدیدترین", readMore: "ادامه مطلب", viewMoreArticles: "مشاهده مقالات بیشتر",
+            testimonialsTitle: "نظرات کاربران برجسته", testimonial1Content: "\"این سایت یک مرجع بی‌نظیر برای تحقیق در مورد هنر ایران است. سرعت بارگذاری و دقت مقالات فوق‌العاده است.\"", testimonial1Name: "دکتر ن. احمدی، پژوهشگر تاریخ هنر", testimonial2Content: "\"بهترین پلتفرمی که برای نمایش آثارم پیدا کرده‌ام. تیم پشتیبانی بسیار حرفه‌ای و دلسوز هستند.\"", testimonial2Name: "سارا نوری، هنرمند خوشنویس", testimonial3Content: "\"به عنوان یک دانشجوی معماری، این مجموعه مقالات تخصصی، منبع اصلی من برای پروژه‌های دانشگاهی است.\"", testimonial3Name: "علیرضا کیانی، دانشجوی معماری",
+            aboutTitle: "درباره گنجینه فرهنگ و هنر", aboutContent1: "ما با هدف جمع‌آوری و نمایش جامع‌ترین آثار هنری و فرهنگی ایران، این پلتفرم را بنیان نهادیم. مأموریت ما حمایت از هنرمندان داخلی و معرفی غنای فرهنگی ایران به جهان است.", aboutContent2: "تیم ما متشکل از متخصصان هنر، تاریخ و فناوری است که متعهد به ارائه یک تجربه کاربری بی‌نقص و محتوای دقیق و معتبر هستند. ما یک مرجع تخصصی برای دانشجویان، پژوهشگران و علاقه‌مندان به هنر هستیم.", aboutTeamLink: "آشنایی با تیم ما",
+            contactTitle: "ارسال نظر و تماس با ما", contactPitch: "ما مشتاق شنیدن نظرات، پیشنهادات و انتقادات شما هستیم. از طریق فرم زیر یا راه‌های ارتباطی با ما تماس بگیرید.", contactFormTitle: "فرم تماس", formLabelName: "نام و نام خانوادگی:", formLabelEmail: "ایمیل:", formLabelPhone: "شماره تلفن (اختیاری):", formLabelMessage: "پیام:", formLabelCaptcha: "کد امنیتی:", formSubmit: "ارسال پیام",
+            otpTitle: "تأیید شماره تلفن", otpMessage: "کد ۴ رقمی به شماره [PHONE_NUMBER] ارسال شد.", otpVerify: "تأیید", otpClose: "بستن",
+            faq1Q: "چگونه می‌توانم اثر هنری خود را در گنجینه ثبت کنم؟", faq1A: "برای ثبت اثر، ابتدا باید در سایت ثبت نام کرده و وارد پنل کاربری خود شوید. سپس از طریق بخش \"ارسال اثر جدید\"، اطلاعات و تصاویر اثر خود را بارگذاری کنید. آثار توسط تیم کارشناسی ما بررسی و در صورت تأیید، منتشر خواهند شد.",
+            faq2Q: "آیا محتوای سایت به زبان‌های دیگر هم ترجمه می‌شود؟", faq2A: "بله، وب‌سایت ما کاملاً مجهز به قابلیت چندزبانه (i18n) است و می‌توانید با کلیک روی دکمه EN/FA در بالای صفحه، محتوا را به زبان انگلیسی یا فارسی مشاهده کنید.",
+            faq3Q: "آیا ثبت‌نام هنرمندان رایگان است؟", faq3A: "ثبت‌نام و ایجاد پروفایل هنرمندی کاملاً رایگان است. ما از هنر شما حمایت می‌کنیم. در حال حاضر هیچ هزینه اشتراکی برای نمایش آثار دریافت نمی‌شود.",
+            faq4Q: "سیاست حفظ حریم خصوصی شما چگونه است؟", faq4A: "ما متعهد به حفظ اطلاعات شخصی کاربران هستیم. تمام داده‌ها بر اساس استانداردهای بین‌المللی رمزگذاری و ذخیره می‌شوند. برای جزئیات بیشتر، لطفاً به صفحه سیاست حفظ حریم خصوصی مراجعه کنید.", privacyPolicyLink: "سیاست حفظ حریم خصوصی",
+            faq5Q: "چگونه می‌توانم گزارش تخلف یا کپی رایت را ارسال کنم؟", faq5A: "لطفاً با استفاده از فرم تماس (بخش بالا) یا ایمیل مستقیم، جزئیات اثر و دلیل تخلف را برای ما ارسال کنید. تیم حقوقی ما در اسرع وقت موضوع را بررسی و پیگیری خواهد کرد.",
+            newsletterTitle: "عضویت در خبرنامه", newsletterSubtitle: "جدیدترین آثار و مقالات را مستقیماً در ایمیل خود دریافت کنید.", newsletterPlaceholder: "ایمیل خود را وارد کنید...", newsletterSubmit: "عضویت",
+            footerMission: "ما بزرگ‌ترین آرشیو آنلاین هنر ایرانی هستیم که پل ارتباطی میان هنرمندان و جامعه جهانی ایجاد می‌کنیم.", footerQuickLinks: "لینک‌های سریع", footerContact: "تماس و نقشه سایت", footerPrivacy: "سیاست حفظ حریم خصوصی", footerTerms: "شرایط استفاده از خدمات", footerAddress: "آدرس:", footerEmail: "ایمیل:", footerPhone: "تلفن:", footerSitemapLink: "مشاهده نقشه سایت (XML)", footerCopyright: "گنجینه فرهنگ و هنر - تمامی حقوق محفوظ است.", footerDesign: "طراحی و توسعه با ❤️ برای ترویج فرهنگ ایران.",
+            errorMessage: "لطفاً خطاهای موجود در فرم را برطرف نمایید.", successMessage: "پیام شما با موفقیت ارسال شد. از صبر و همراهی شما سپاسگزاریم.", errorEmailInvalid: "فرمت ایمیل نامعتبر است.", errorPhoneInvalid: "فرمت شماره تلفن نامعتبر است. (مثال: ۰۹۱۲۳۴۵۶۷۸۹)", errorCaptchaInvalid: "پاسخ کد امنیتی اشتباه است.", errorRequiredField: "این فیلد اجباری است.",
+            // داده‌های مقالات شبیه‌سازی شده
+            article1Title: "تاثیر شاهنامه بر هنر مینیاتور ایرانی", article2Title: "مکتب اصفهان در معماری اسلامی", article3Title: "نقش موسیقی مقامی در فرهنگ بختیاری"
         },
         en: {
-            // Metadata
-            pageTitle: "Home | Iranian Art and Culture Treasure - Comprehensive Reference",
-            metaDescription: "The Iranian Art and Culture Treasure is a bridge between the past and future of Iranian art and literature. A platform for reflecting authentic beauty, specialized articles, and artist registration.",
-            // Navigation
-            logoTitle: "Art Treasure",
-            navHome: "Home", navFeatured: "Featured Works", navArticles: "Articles", navAbout: "About Us", navContact: "Contact Us", navFAQ: "FAQ",
-            navLogin: "Login", navRegister: "Register",
-            searchPlaceholder: "Search Artworks and Articles...",
-            langToggleText: "فارسی",
-            // Hero
-            heroMainTitle: "Iranian Art and Culture Treasure: The Comprehensive Reference",
-            heroSubtitle: "A bridge between the past and future of Iranian art and literature. A place to reflect authentic beauty and share artworks.",
-            heroCTA: "View Featured Works",
-            // Stats
-            statArtworks: "Registered Artworks", statArtists: "Active Artists", statCategories: "Art Categories",
-            // Slider (Sample)
-            featuredTitle: "Featured and Selected Works of the Week", featuredSubtitle: "View the best works by prominent Iranian artists.",
-            slideLink: "View Details",
-            // Articles and Filter
-            articlesTitle: "Latest Specialized Articles", articlesSubtitle: "In-depth and analytical articles on various fields of Iranian art and culture.",
-            filterLabel: "Filter by:", filterAll: "All Categories", sortLabel: "Sort by:", sortByDate: "Newest",
-            readMore: "Read More", loadMoreButton: "View More Articles",
-            // About Us
-            aboutTitle: "About the Art and Culture Treasure", aboutP1: "We founded this platform with the goal of collecting and displaying the most comprehensive Iranian artistic and cultural works...",
-            aboutP2: "Our team consists of experts in art, history, and technology committed to providing a flawless user experience and accurate, reliable content.",
-            aboutTeamLink: "Meet Our Team",
-            // Contact Us and Form
-            contactTitle: "Send Feedback and Contact Us", contactSubtitle: "We are eager to hear your opinions, suggestions, and criticisms.",
-            formHeader: "Contact Form",
-            placeholderName: "Full Name", placeholderEmail: "Valid Email", placeholderMessage: "Your Message...",
-            placeholderCaptcha: "Enter Security Code", formSubmitButton: "Send Message",
-            // Errors and System Messages
-            errorNameRequired: "Name is required.", errorEmailInvalid: "Please enter a valid email address.",
-            errorMessageRequired: "Please enter your message.", errorCaptcha: "The entered security code is incorrect.",
-            successMessage: "✅ Your message was sent successfully. Thank you.",
-            errorSystem: "❌ An error occurred while sending the message. Please try again.",
-            // Newsletter
-            newsletterTitle: "Subscribe to Newsletter", newsletterSubtitle: "Receive the latest artworks and articles directly in your email.",
-            newsletterSubmitButton: "Subscribe",
-            // Footer
-            footerAboutTitle: "Art Treasure", footerMission: "We are the largest online archive of Iranian art, creating a bridge between artists and the global community.",
-            footerLinksTitle: "Quick Links", navPrivacy: "Privacy Policy", navTerms: "Terms of Service",
-            footerContactTitle: "Contact and Site Map", footerAddress: "Address: Tehran, Honar Street, Plaque 10",
-            footerEmail: "Email:", footerPhone: "Phone:", footerSitemapLink: "View Site Map (XML)",
-            footerCopyright: "© 2025 Art and Culture Treasure - All rights reserved.", footerDesign: "Designed and Developed with ❤️ to promote Iranian culture.",
-            // Login and Register (Modal)
-            modalLoginTitle: "Log in to your Account", modalRegisterTitle: "Create a New Account",
-            loginButton: "Login", registerButton: "Register",
-            registerHelp: "By registering, you accept our Terms of Service.",
-            placeholderPassword: "Password", placeholderPhone: "Phone Number (Optional)",
-            forgotPassword: "Forgot Password?",
-            passwordSuggestButton: "Suggest Strong Password",
-            passwordSuggested: "The following password has been copied to the clipboard. Please save it:",
-            errorPhoneInvalid: "The entered phone number is invalid. (Format: 09xx xxx xx xx)",
-            // Phone Verification
-            verifyPhoneTitle: "Verify Phone Number", verifyPhoneCode: "A verification code has been sent to your number.",
-            placeholderVerificationCode: "4-digit Verification Code", verifyButton: "Verify",
+            pageTitle: "Home | Iranian Art Treasury - The most comprehensive Iranian Art Reference", metaDescription: "Iranian Art Treasury, a bridge between the past and future of Iranian art and literature. A place to reflect authentic beauties, specialized articles, and artist registration.", logoTitle: "Art Treasury", logoSubtitle: "Iran's Treasury",
+            navHome: "Home", navFeatured: "Featured Works", navArticles: "Articles", navAbout: "About Us", navContact: "Contact Us", navFAQ: "FAQ", navLogin: "Login", navRegister: "Register", searchPlaceholder: "Search for works and articles...", langToggleText: "FA",
+            heroMainTitle: "Iranian Art & Culture Treasury: The Most Comprehensive Reference", heroSubtitle: "A bridge between the past and future of Iranian art and literature. A place to reflect authentic beauties and share artwork.", heroCTA: "View Featured Works",
+            stat1: "Registered Works", stat2: "Active Artists", stat3: "Art Categories",
+            featuredTitle: "Featured Artworks of the Week", featuredSubtitle: "View the best works by prominent Iranian artists.", viewDetails: "View Details",
+            articlesTitle: "Latest Specialized Articles", articlesSubtitle: "In-depth and analytical articles on various fields of Iranian art and culture.", filterBy: "Filter By:", sortBy: "Sort By:", catAll: "All Categories", catPainting: "Painting", catLiterature: "Literature", catArchitecture: "Architecture", catCalligraphy: "Calligraphy", sortNewest: "Newest", sortPopular: "Most Popular", readMore: "Read More", viewMoreArticles: "View More Articles",
+            testimonialsTitle: "Prominent User Testimonials", testimonial1Content: "\"This site is an unparalleled reference for research on Iranian art. The loading speed and accuracy of the articles are superb.\"", testimonial1Name: "Dr. N. Ahmadi, Art History Researcher", testimonial2Content: "\"The best platform I have found to display my works. The support team is very professional and caring.\"", testimonial2Name: "Sara Nouri, Calligraphy Artist", testimonial3Content: "\"As an architecture student, this collection of specialized articles is my main source for university projects.\"", testimonial3Name: "Alireza Kiani, Architecture Student",
+            aboutTitle: "About Iranian Art & Culture Treasury", aboutContent1: "We established this platform with the goal of collecting and showcasing the most comprehensive Iranian artistic and cultural works. Our mission is to support domestic artists and introduce the cultural richness of Iran to the world.", aboutContent2: "Our team is composed of art, history, and technology specialists committed to providing a flawless user experience and accurate, reliable content. We are a specialized reference for students, researchers, and art enthusiasts.", aboutTeamLink: "Meet Our Team",
+            contactTitle: "Send Feedback and Contact Us", contactPitch: "We are eager to hear your opinions, suggestions, and criticisms. Contact us through the form below or the communication channels.", contactFormTitle: "Contact Form", formLabelName: "Full Name:", formLabelEmail: "Email:", formLabelPhone: "Phone Number (Optional):", formLabelMessage: "Message:", formLabelCaptcha: "Security Code:", formSubmit: "Send Message",
+            otpTitle: "Phone Number Verification", otpMessage: "A 4-digit code was sent to [PHONE_NUMBER].", otpVerify: "Verify", otpClose: "Close",
+            faq1Q: "How can I register my artwork in the Treasury?", faq1A: "To register, you must first register on the site and log in to your user panel. Then, upload your artwork details and images via the 'Submit New Work' section. Works will be reviewed by our expert team and published if approved.",
+            faq2Q: "Is the site content translated into other languages?", faq2A: "Yes, our website is fully equipped with multilingual capability (i18n), and you can view the content in English or Persian by clicking the EN/FA button at the top of the page.",
+            faq3Q: "Is artist registration free?", faq3A: "Registration and creating an artist profile are completely free. We support your art. Currently, no subscription fee is charged for displaying works.",
+            faq4Q: "What is your privacy policy?", faq4A: "We are committed to protecting users' personal information. All data is encrypted and stored according to international standards. For more details, please refer to the Privacy Policy page.", privacyPolicyLink: "Privacy Policy",
+            faq5Q: "How can I report a violation or copyright infringement?", faq5A: "Please send us the details of the work and the reason for the violation using the contact form (above section) or direct email. Our legal team will investigate and follow up as soon as possible.",
+            newsletterTitle: "Join Our Newsletter", newsletterSubtitle: "Receive the latest works and articles directly in your email.", newsletterPlaceholder: "Enter your email...", newsletterSubmit: "Subscribe",
+            footerMission: "We are the largest online archive of Iranian art, creating a bridge between artists and the global community.", footerQuickLinks: "Quick Links", footerContact: "Contact & Sitemap", footerPrivacy: "Privacy Policy", footerTerms: "Terms of Service", footerAddress: "Address:", footerEmail: "Email:", footerPhone: "Phone:", footerSitemapLink: "View Sitemap (XML)", footerCopyright: "Iranian Art Treasury - All rights reserved.", footerDesign: "Designed and developed with ❤️ to promote Iranian culture.",
+            errorMessage: "Please fix the errors in the form.", successMessage: "Your message was sent successfully. Thank you for your patience and cooperation.", errorEmailInvalid: "Invalid email format.", errorPhoneInvalid: "Invalid phone number format. (Example: 09123456789)", errorCaptchaInvalid: "Incorrect security code answer.", errorRequiredField: "This field is required.",
+            // داده‌های مقالات شبیه‌سازی شده
+            article1Title: "Impact of Shahnameh on Iranian Miniature Art", article2Title: "Isfahan School in Islamic Architecture", article3Title: "The Role of Local Music in Bakhtiari Culture"
         }
-    };
-
-    // --------------------------------------------------
-    // ۲. توابع کمکی (Utility Functions)
-    // --------------------------------------------------
-
-    // اعتبار سنجی ایمیل
-    const validateEmail = (email) => {
-        const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-        return re.test(String(email).toLowerCase());
-    };
-    // اعتبار سنجی شماره تلفن (فقط ایران)
-    const validatePhoneNumber = (phone) => {
-        // الگو: 09xx xxx xxxx
-        const re = /^09\d{9}$/;
-        return re.test(String(phone).replace(/\s/g, ''));
     };
     
-    // تولید گذرواژه قوی
-    const generateStrongPassword = () => {
-        const length = 16;
-        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]\:;?><,./-=";
-        let password = "";
-        
-        // اطمینان از وجود حداقل یک حرف بزرگ، کوچک، عدد، و کاراکتر ویژه
-        password += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[Math.floor(Math.random() * 26)];
-        password += "abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 26)];
-        password += "0123456789"[Math.floor(Math.random() * 10)];
-        password += "!@#$%^&*"[Math.floor(Math.random() * 8)];
-
-        // تکمیل باقی طول
-        for (let i = password.length; i < length; i++) {
-            password += charset[Math.floor(Math.random() * charset.length)];
-        }
-        
-        // درهم ریختن (shuffle) رشته نهایی
-        return password.split('').sort(() => 0.5 - Math.random()).join('');
-    };
-
     // --------------------------------------------------
-    // ۳. چندزبانه سازی (Internationalization - i18n)
+    // ۲. ماژول اصلی: ArtGalleryApp (پیاده سازی با الگوی IIFE)
     // --------------------------------------------------
+    const ArtGalleryApp = (() => {
 
-    const applyLanguage = (lang) => {
-        // تغییر ویژگی lang و dir در المان html و body
-        html.setAttribute('lang', lang);
-        html.setAttribute('dir', (lang === 'fa' ? 'rtl' : 'ltr'));
-        body.setAttribute('dir', (lang === 'fa' ? 'rtl' : 'ltr'));
+        let currentLang = localStorage.getItem('lang') || (html.getAttribute('lang') === 'fa' ? 'fa' : 'en');
+        let currentTheme = localStorage.getItem('theme') || 'theme-light';
+        let currentCaptchaResult = null;
+        let articlesData = []; // برای نگهداری داده‌های شبیه‌سازی شده مقالات
 
-        // اعمال ترجمه بر اساس data-lang-key
-        $$('[data-lang-key]').forEach(el => {
-            const key = el.getAttribute('data-lang-key');
-            if (I18N_DATA[lang] && I18N_DATA[lang][key]) {
-                const translation = I18N_DATA[lang][key];
+        // --------------------------------------------------
+        // توابع Utility (کمکی)
+        // --------------------------------------------------
 
-                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                    // برای placeholder
-                    el.setAttribute('placeholder', translation);
-                } else if (el.tagName === 'TITLE') {
-                    // برای title صفحه
-                    el.textContent = translation;
-                } else if (el.tagName === 'META' && el.getAttribute('name') === 'description') {
-                    // برای meta description
-                    el.setAttribute('content', translation);
-                } else {
-                    // برای محتوای متنی
-                    el.textContent = translation;
-                }
+        /**
+         * اعتبارسنجی ایمیل
+         * @param {string} email
+         * @returns {boolean}
+         */
+        const validateEmail = (email) => {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        };
+
+        /**
+         * اعتبارسنجی شماره تلفن ایران (مثال: 0912...)
+         * @param {string} phone
+         * @returns {boolean}
+         */
+        const validatePhoneNumber = (phone) => {
+            if (!phone) return true; // اختیاری
+            const re = /^(0|(\+98)?9\d{9})$/;
+            return re.test(phone.replace(/[\s\u200C]/g, '')); // حذف فاصله و نیم فاصله
+        };
+
+        /**
+         * تولید رمز عبور قوی
+         * @returns {string}
+         */
+        const generateStrongPassword = () => {
+            const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=';
+            let password = '';
+            for (let i = 0; i < 12; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
             }
-        });
-        currentLang = lang;
-        localStorage.setItem('siteLang', lang);
-        // به‌روزرسانی متن دکمه EN/فارسی
-        $('#lang-toggle span').textContent = I18N_DATA[lang].langToggleText;
-    };
-
-    // لود زبان ذخیره شده در localStorage یا تعیین زبان پیش‌فرض
-    const storedLang = localStorage.getItem('siteLang') || 'fa';
-    applyLanguage(storedLang);
-
-    // مدیریت کلیک دکمه تغییر زبان
-    $('#lang-toggle').addEventListener('click', () => {
-        const newLang = (currentLang === 'fa' ? 'en' : 'fa');
-        applyLanguage(newLang);
-    });
-
-    // --------------------------------------------------
-    // ۴. مدیریت حالت تاریک/روشن (Dark Mode)
-    // --------------------------------------------------
-    
-    const modeToggle = $('#mode-toggle');
-    const modeIcon = $('#mode-icon');
-    
-    const applyTheme = (theme) => {
-        if (theme === 'dark') {
-            html.classList.add('dark-mode');
-            html.classList.remove('theme-light');
-            modeIcon.classList.replace('fa-moon', 'fa-sun');
-        } else {
-            html.classList.remove('dark-mode');
-            html.classList.add('theme-light');
-            modeIcon.classList.replace('fa-sun', 'fa-moon');
-        }
-        localStorage.setItem('siteTheme', theme);
-    };
-
-    // لود تم ذخیره شده یا تشخیص تم سیستمی
-    const storedTheme = localStorage.getItem('siteTheme');
-    if (storedTheme) {
-        applyTheme(storedTheme);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        applyTheme('dark');
-    } else {
-        applyTheme('light');
-    }
-
-    modeToggle.addEventListener('click', () => {
-        const newTheme = html.classList.contains('dark-mode') ? 'light' : 'dark';
-        applyTheme(newTheme);
-    });
-
-    // --------------------------------------------------
-    // ۵. منوی موبایل (همبرگری)
-    // --------------------------------------------------
-    const menuToggle = $('#menu-toggle');
-    const mainNav = $('#main-nav');
-
-    menuToggle.addEventListener('click', () => {
-        mainNav.classList.toggle('open');
-        menuToggle.querySelector('i').classList.toggle('fa-bars');
-        menuToggle.querySelector('i').classList.toggle('fa-xmark');
-        // بستن منو با کلیک روی هر لینک
-        $$('#main-nav a').forEach(link => {
-            link.addEventListener('click', () => mainNav.classList.remove('open'));
-        });
-    });
-    
-    // --------------------------------------------------
-    // ۶. نوار پیشرفت اسکرول و دکمه بازگشت به بالا
-    // --------------------------------------------------
-    const progressBar = $('#progress-bar');
-    const backToTopButton = $('#back-to-top');
-    const header = $('header');
-
-    window.addEventListener('scroll', () => {
-        // ۱. نوار پیشرفت
-        const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-        progressBar.style.width = scrollPercent + '%';
-
-        // ۲. دکمه بازگشت به بالا
-        if (window.scrollY > 300) {
-            backToTopButton.classList.add('show');
-            header.classList.add('scrolled'); // افکت هدر ثابت
-        } else {
-            backToTopButton.classList.remove('show');
-            header.classList.remove('scrolled');
-        }
-    });
-
-    backToTopButton.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    // --------------------------------------------------
-    // ۷. شمارنده‌های انیمیشنی (Stats Counters)
-    // --------------------------------------------------
-    
-    const statCounters = $$('.stat-value');
-    
-    const countUp = (el, target) => {
-        let count = 0;
-        const speed = 200; // سرعت کلی انیمیشن
-        const step = target / speed;
+            return password;
+        };
         
-        const updateCount = () => {
-            count += step;
-            if (count < target) {
-                el.textContent = "+" + Math.floor(count).toLocaleString(currentLang);
-                requestAnimationFrame(updateCount);
+        /**
+         * نمایش انیمیشن لرزش (Shake) برای یک المان
+         * @param {HTMLElement} element
+         */
+        const triggerShakeAnimation = (element) => {
+            const formGroup = element.closest('.form-group');
+            if (formGroup) {
+                formGroup.classList.add('error');
+                setTimeout(() => formGroup.classList.remove('error'), 500);
+            }
+        }
+        
+        // --------------------------------------------------
+        // ۳. مدیریت چندزبانگی (i18n)
+        // --------------------------------------------------
+
+        /**
+         * اعمال ترجمه‌ها بر اساس زبان فعلی
+         */
+        const applyTranslations = () => {
+            const data = I18N_DATA[currentLang];
+            const isRTL = currentLang === 'fa';
+            
+            // 1. جهت‌دهی و زبان HTML
+            html.setAttribute('lang', currentLang);
+            html.setAttribute('dir', isRTL ? 'rtl' : 'ltr');
+            body.classList.remove(isRTL ? 'ltr' : 'rtl');
+            body.classList.add(isRTL ? 'rtl' : 'ltr');
+            
+            // 2. ترجمه متادیتا
+            $('title').textContent = data.pageTitle;
+            $('meta[name="description"]').setAttribute('content', data.metaDescription);
+            
+            // 3. ترجمه متن المان‌ها
+            $$('[data-lang-key]').forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                if (data[key]) {
+                    if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
+                        el.setAttribute('placeholder', data[key]);
+                    } else {
+                        el.textContent = data[key];
+                    }
+                }
+            });
+            
+            // 4. به‌روزرسانی دکمه تغییر زبان
+            $('#lang-toggle span').textContent = currentLang === 'fa' ? 'EN' : 'FA';
+            
+            // 5. به‌روزرسانی عنوان دکمه بازگشت به بالا
+            $('#back-to-top').setAttribute('aria-label', currentLang === 'fa' ? 'بازگشت به بالای صفحه' : 'Back to Top');
+        };
+
+        /**
+         * مدیریت رویداد تغییر زبان
+         */
+        const handleLangToggle = () => {
+            const langToggle = $('#lang-toggle');
+            langToggle.addEventListener('click', () => {
+                currentLang = currentLang === 'fa' ? 'en' : 'fa';
+                localStorage.setItem('lang', currentLang);
+                applyTranslations();
+                ArtGalleryApp.updateMobileMenu(); // به‌روزرسانی منوی موبایل
+                ArtGalleryApp.updateCaptcha(); // به‌روزرسانی کپچا
+                ArtGalleryApp.updateCarousel(); // به‌روزرسانی اسلاید
+            });
+            applyTranslations(); // اجرای اولیه
+        };
+
+        // --------------------------------------------------
+        // ۴. مدیریت حالت تاریک/روشن (Theme Toggle)
+        // --------------------------------------------------
+
+        /**
+         * اعمال تم فعلی
+         */
+        const applyTheme = () => {
+            html.classList.remove('theme-light', 'dark-mode');
+            if (currentTheme === 'dark-mode') {
+                html.classList.add('dark-mode');
+                $('#theme-toggle i').className = 'fa-solid fa-sun';
             } else {
-                el.textContent = "+" + target.toLocaleString(currentLang);
+                html.classList.add('theme-light');
+                $('#theme-toggle i').className = 'fa-solid fa-moon';
             }
         };
-        updateCount();
-    };
 
-    // استفاده از Intersection Observer برای شروع انیمیشن هنگام ورود به دید
-    const counterObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const target = parseInt(entry.target.getAttribute('data-target'));
-                if (target) {
-                    countUp(entry.target, target);
+        /**
+         * مدیریت رویداد تغییر تم
+         */
+        const handleThemeToggle = () => {
+            const themeToggle = $('#theme-toggle');
+            
+            // بررسی ترجیحات سیستمی هنگام شروع
+            if (localStorage.getItem('theme') === null) {
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    currentTheme = 'dark-mode';
                 }
-                observer.unobserve(entry.target); // فقط یکبار اجرا شود
             }
-        });
-    }, { threshold: 0.5 }); // وقتی ۵۰٪ از المان در دید باشد
 
-    statCounters.forEach(counter => {
-        counterObserver.observe(counter);
-    });
-    
-    // --------------------------------------------------
-    // ۸. انیمیشن Typewriter برای تیتر Hero
-    // --------------------------------------------------
+            themeToggle.addEventListener('click', () => {
+                currentTheme = currentTheme === 'theme-light' ? 'dark-mode' : 'theme-light';
+                localStorage.setItem('theme', currentTheme);
+                applyTheme();
+            });
+            applyTheme(); // اجرای اولیه
+        };
+        
+        // --------------------------------------------------
+        // ۵. Lazy Loading تصاویر (جدید)
+        // --------------------------------------------------
 
-    const heroTitleEl = $('#hero-title');
-    if (heroTitleEl) {
-        const text = I18N_DATA[currentLang].heroMainTitle;
-        heroTitleEl.textContent = ''; // خالی کردن محتوای اولیه
-        let i = 0;
-        const speed = 75; // سرعت تایپ
+        /**
+         * بارگذاری تنبل (Lazy Loading) برای تصاویر دارای data-src
+         */
+        const lazyLoadImages = () => {
+            const lazyImages = $$('.lazy-image');
+            
+            if ('IntersectionObserver' in window) {
+                const lazyImageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            const lazyImage = entry.target;
+                            const src = lazyImage.getAttribute('data-src');
+                            if (src) {
+                                lazyImage.src = src;
+                                lazyImage.onload = () => lazyImage.classList.add('loaded'); // اضافه کردن کلاس برای انیمیشن
+                                lazyImage.removeAttribute('data-src');
+                                observer.unobserve(lazyImage);
+                            }
+                        }
+                    });
+                }, {
+                    rootMargin: '0px 0px 50px 0px', // شروع بارگذاری قبل از ورود کامل به محدوده دید
+                    threshold: 0.01 // بارگذاری با کوچکترین درصد
+                });
 
-        function typeWriter() {
-            if (i < text.length) {
-                heroTitleEl.textContent += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, speed);
+                lazyImages.forEach((lazyImage) => {
+                    lazyImageObserver.observe(lazyImage);
+                });
+            } else {
+                // فال‌بک برای مرورگرهای قدیمی
+                lazyImages.forEach(img => {
+                    const src = img.getAttribute('data-src');
+                    if (src) {
+                        img.src = src;
+                        img.onload = () => img.classList.add('loaded');
+                    }
+                });
             }
-        }
-        // تاخیر برای لود اولیه
-        setTimeout(typeWriter, 500); 
-    }
+        };
 
-    // --------------------------------------------------
-    // ۹. Scroll Reveal (Fade In)
-    // --------------------------------------------------
-    const fadeInElements = $$('.fade-in');
 
-    const fadeInObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const delay = entry.target.getAttribute('data-delay') || 0;
-                setTimeout(() => {
-                    entry.target.classList.add('visible');
-                }, delay);
-                fadeInObserver.unobserve(entry.target);
+        // --------------------------------------------------
+        // ۶. نوار پیشرفت اسکرول و دکمه بازگشت به بالا
+        // --------------------------------------------------
+
+        /**
+         * محاسبه و به‌روزرسانی نوار پیشرفت
+         */
+        const updateProgressBarAndBackToTop = () => {
+            const progress = $('#progress-bar');
+            const backToTop = $('#back-to-top');
+            
+            // نوار پیشرفت
+            const scrollPercent = (document.documentElement.scrollTop / 
+                (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 100;
+            progress.style.width = scrollPercent + '%';
+
+            // دکمه بازگشت به بالا
+            if (document.documentElement.scrollTop > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
             }
-        });
-    }, { threshold: 0.1 }); 
+        };
 
-    fadeInElements.forEach(el => {
-        fadeInObserver.observe(el);
-    });
+        /**
+         * مدیریت رویداد بازگشت به بالا
+         */
+        const handleBackToTop = () => {
+            const backToTop = $('#back-to-top');
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            window.addEventListener('scroll', updateProgressBarAndBackToTop);
+            updateProgressBarAndBackToTop(); // اجرای اولیه
+        };
+        
+        // --------------------------------------------------
+        // ۷. اسلایدر آثار ویژه (Carousel)
+        // --------------------------------------------------
 
+        /**
+         * منطق اصلی اسلایدر (قبلی)
+         */
+        const handleCarousel = () => {
+            const carouselContainer = $('.carousel-container');
+            const carouselTrack = $('.carousel-track');
+            const prevButton = $('.carousel-control.prev');
+            const nextButton = $('.carousel-control.next');
+            let currentIndex = 0;
+            let slideInterval = null;
+            
+            if (!carouselContainer) return;
 
-    // --------------------------------------------------
-    // ۱۰. اعتبارسنجی پیشرفته فرم تماس (Contact Form)
-    // --------------------------------------------------
+            const updateCarousel = () => {
+                const card = $('.art-card');
+                if (!card) return;
 
-    const contactForm = $('#contact-form');
-    const formStatus = $('#form-status');
-    let generatedCaptcha = '';
+                // محاسبه تعداد کارت‌های قابل نمایش بر اساس عرض
+                const containerWidth = carouselContainer.offsetWidth;
+                let visibleCards = 1;
+                
+                // بر اساس CSS Media Queries
+                if (containerWidth > 992) {
+                    visibleCards = 3;
+                } else if (containerWidth > 768) {
+                    visibleCards = 2;
+                } else {
+                    visibleCards = 1;
+                }
+                
+                // عرض هر کارت با احتساب margin
+                const cardWidth = card.offsetWidth + (15 * 2); 
+                const totalCards = $$('.art-card').length;
+                const maxIndex = totalCards - visibleCards;
+                
+                if (currentIndex < 0) {
+                    currentIndex = maxIndex;
+                } else if (currentIndex > maxIndex) {
+                    currentIndex = 0;
+                }
+                
+                // اعمال ترنسفورم
+                carouselTrack.style.transform = `translateX(${-currentIndex * cardWidth}px)`;
+                
+                // نمایش/پنهان کردن کنترل‌ها
+                prevButton.style.display = currentIndex > 0 ? 'block' : 'none';
+                nextButton.style.display = currentIndex < maxIndex ? 'block' : 'none';
+            };
 
-    // تولید کد امنیتی (CAPTCHA)
-    const generateCaptcha = () => {
-        const num1 = Math.floor(Math.random() * 10) + 1;
-        const num2 = Math.floor(Math.random() * 10) + 1;
-        generatedCaptcha = num1 + num2; // پاسخ صحیح
-        $('#captcha-display').textContent = `${num1} + ${num2} = ?`;
-        $('#captcha-input').value = '';
-    };
-    generateCaptcha(); // لود اولیه
+            const moveToNext = () => {
+                const totalCards = $$('.art-card').length;
+                const visibleCards = carouselContainer.offsetWidth > 992 ? 3 : (carouselContainer.offsetWidth > 768 ? 2 : 1);
+                const maxIndex = totalCards - visibleCards;
+                currentIndex = (currentIndex < maxIndex) ? currentIndex + 1 : 0;
+                updateCarousel();
+            };
 
-    const validateForm = (form, isContact) => {
-        let isValid = true;
-        const fields = isContact ? ['contact-name', 'contact-email', 'contact-message', 'captcha-input'] : ['newsletter-email'];
+            const moveToPrev = () => {
+                const totalCards = $$('.art-card').length;
+                const visibleCards = carouselContainer.offsetWidth > 992 ? 3 : (carouselContainer.offsetWidth > 768 ? 2 : 1);
+                const maxIndex = totalCards - visibleCards;
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : maxIndex;
+                updateCarousel();
+            };
 
-        fields.forEach(id => {
-            const input = $(`#${id}`);
-            const errorEl = $(`#${id.replace('contact-', '').replace('-input', '')}-error`);
-            if (!input) return;
+            const startAutoSlide = () => {
+                if (slideInterval) clearInterval(slideInterval);
+                slideInterval = setInterval(moveToNext, 5000);
+            };
 
-            errorEl.textContent = ''; // پاک کردن خطاهای قبلی
+            prevButton.addEventListener('click', moveToPrev);
+            nextButton.addEventListener('click', moveToNext);
+            
+            carouselContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+            carouselContainer.addEventListener('mouseleave', startAutoSlide);
 
-            if (input.hasAttribute('required') && input.value.trim() === '') {
-                errorEl.textContent = I18N_DATA[currentLang].errorNameRequired; // خطا برای فیلد اول
-                if (id.includes('email')) errorEl.textContent = I18N_DATA[currentLang].errorEmailInvalid;
-                if (id.includes('message')) errorEl.textContent = I18N_DATA[currentLang].errorMessageRequired;
-                isValid = false;
-            } else if (id.includes('email') && !validateEmail(input.value)) {
-                errorEl.textContent = I18N_DATA[currentLang].errorEmailInvalid;
-                isValid = false;
-            } else if (id === 'captcha-input') {
-                if (parseInt(input.value) !== generatedCaptcha) {
-                    errorEl.textContent = I18N_DATA[currentLang].errorCaptcha;
-                    generateCaptcha(); // تولید مجدد کپچا
+            window.addEventListener('load', updateCarousel);
+            window.addEventListener('resize', updateCarousel);
+            
+            // تابع updateCarousel را به ماژول export می‌کنیم
+            ArtGalleryApp.updateCarousel = updateCarousel;
+            
+            startAutoSlide();
+        };
+
+        // --------------------------------------------------
+        // ۸. Typewriter Effect
+        // --------------------------------------------------
+
+        /**
+         * افکت تایپ رایتینگ برای تیتر اصلی
+         */
+        const typeWriterEffect = () => {
+            const element = $('.typewriter-text');
+            if (!element) return;
+            
+            // گرفتن متن از داده‌های i18n
+            const textKey = element.getAttribute('data-lang-key');
+            const text = I18N_DATA[currentLang][textKey] || 'Loading...';
+            
+            let i = 0;
+            element.textContent = ''; // خالی کردن متن
+            
+            const typing = () => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typing, 50); // سرعت تایپ
+                }
+            }
+            // اطمینان از اعمال ترجمه قبل از شروع
+            setTimeout(typing, 500); 
+        };
+
+        // --------------------------------------------------
+        // ۹. Scroll Reveal (انیمیشن‌های هنگام اسکرول)
+        // --------------------------------------------------
+
+        /**
+         * نمایش انیمیشن برای المان‌های .scroll-reveal و .stat-item
+         */
+        const setupScrollReveal = () => {
+            const elements = $$('.scroll-reveal, .stat-item, .article-card, .testimonial-card');
+            
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const target = entry.target;
+                            const delay = parseFloat(target.getAttribute('data-delay')) || 0;
+                            
+                            setTimeout(() => {
+                                target.classList.add('visible');
+                                target.classList.remove('scroll-reveal');
+                                observer.unobserve(target);
+                            }, delay * 1000);
+                        }
+                    });
+                }, {
+                    rootMargin: '0px 0px -100px 0px', // کمی قبل از وسط صفحه نمایش داده شود
+                    threshold: 0.1
+                });
+                
+                elements.forEach(el => {
+                    el.classList.add('scroll-reveal'); // کلاس اولیه برای پنهان کردن
+                    observer.observe(el);
+                });
+            } else {
+                // فال‌بک: نمایش همه المان‌ها بلافاصله
+                elements.forEach(el => el.classList.add('visible'));
+            }
+        };
+        
+        // --------------------------------------------------
+        // ۱۰. مدیریت فرم تماس و CAPTCHA (امنیت)
+        // --------------------------------------------------
+
+        /**
+         * تولید کد امنیتی (CAPTCHA)
+         */
+        const generateCaptcha = () => {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            const operator = ['+', '-'][Math.floor(Math.random() * 2)];
+            let result = 0;
+
+            if (operator === '+') {
+                result = num1 + num2;
+            } else {
+                // اطمینان از مثبت بودن نتیجه در فارسی
+                if (num1 < num2) {
+                    [num1, num2] = [num2, num1]; // جابه‌جایی
+                }
+                result = num1 - num2;
+            }
+
+            const captchaDisplay = $('#captcha-display');
+            captchaDisplay.textContent = `${num1} ${operator} ${num2} = ؟`;
+            currentCaptchaResult = result;
+            $('#captcha-input').value = '';
+        };
+
+        /**
+         * مدیریت رویداد فرم تماس
+         */
+        const handleContactForm = () => {
+            const form = $('#contact-form');
+            if (!form) return;
+
+            const fullNameInput = $('#full-name');
+            const emailInput = $('#email');
+            const phoneInput = $('#phone-number');
+            const messageInput = $('#message');
+            const captchaInput = $('#captcha-input');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let isValid = true;
+
+                // تابع اعتبارسنجی فیلد
+                const validateField = (input, validator, errorElId) => {
+                    const errorEl = $(errorElId);
+                    errorEl.textContent = '';
+                    input.closest('.form-group').classList.remove('error');
+
+                    if (input.hasAttribute('required') && !input.value.trim()) {
+                        errorEl.textContent = I18N_DATA[currentLang].errorRequiredField;
+                        input.closest('.form-group').classList.add('error');
+                        triggerShakeAnimation(input);
+                        isValid = false;
+                    } else if (!validator(input.value.trim())) {
+                        errorEl.textContent = errorElId.includes('email') ? I18N_DATA[currentLang].errorEmailInvalid : I18N_DATA[currentLang].errorPhoneInvalid;
+                        input.closest('.form-group').classList.add('error');
+                        triggerShakeAnimation(input);
+                        isValid = false;
+                    }
+                };
+
+                // اعتبارسنجی فیلدها
+                validateField(fullNameInput, (val) => true, '#full-name-error');
+                validateField(emailInput, validateEmail, '#email-error');
+                validateField(phoneInput, validatePhoneNumber, '#phone-number-error');
+                validateField(messageInput, (val) => true, '#message-error');
+                
+                // اعتبارسنجی کپچا
+                const captchaErrorEl = $('#captcha-error');
+                captchaErrorEl.textContent = '';
+                captchaInput.closest('.form-group').classList.remove('error');
+                
+                if (parseInt(captchaInput.value.trim()) !== currentCaptchaResult) {
+                    captchaErrorEl.textContent = I18N_DATA[currentLang].errorCaptchaInvalid;
+                    captchaInput.closest('.form-group').classList.add('error');
+                    triggerShakeAnimation(captchaInput);
+                    generateCaptcha(); // تولید مجدد در صورت خطا
                     isValid = false;
                 }
-            }
-        });
-        return isValid;
-    };
 
-
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            formStatus.style.display = 'none';
-
-            if (validateForm(contactForm, true)) {
-                // شبیه‌سازی ارسال موفقیت‌آمیز به سرور
-                setTimeout(() => {
-                    formStatus.textContent = I18N_DATA[currentLang].successMessage;
-                    formStatus.style.display = 'block';
-                    formStatus.style.color = 'var(--color-success)';
-                    contactForm.reset();
-                    generateCaptcha(); // تولید مجدد کپچا پس از ارسال موفق
-                }, 1000);
-            } else {
-                formStatus.textContent = I18N_DATA[currentLang].errorSystem; // در صورت خطا، پیام خطا نمایش داده می‌شود
-                formStatus.style.display = 'block';
-                formStatus.style.color = 'var(--color-error)';
-                generateCaptcha();
-            }
-        });
-    }
-
-    // --------------------------------------------------
-    // ۱۱. مودال‌های ورود و ثبت نام (Login/Register Modals)
-    // --------------------------------------------------
-    const loginButton = $('#login-button');
-    const registerButton = $('#register-button');
-
-    // تابع تولید محتوای مودال (برای حفظ سادگی، محتوا را در JS تولید می‌کنیم)
-    const createAuthModal = (type) => {
-        const isLogin = (type === 'login');
-        const titleKey = isLogin ? 'modalLoginTitle' : 'modalRegisterTitle';
-        const buttonKey = isLogin ? 'loginButton' : 'registerButton';
-
-        // محتوای فرم
-        let formContent = `
-            <div class="form-group">
-                <label for="auth-email" class="sr-only">${I18N_DATA[currentLang].placeholderEmail}</label>
-                <input type="email" id="auth-email" name="email" required placeholder="${I18N_DATA[currentLang].placeholderEmail}">
-                <span class="error-message" id="auth-email-error"></span>
-            </div>
-            <div class="form-group">
-                <label for="auth-password" class="sr-only">${I18N_DATA[currentLang].placeholderPassword}</label>
-                <input type="password" id="auth-password" name="password" required placeholder="${I18N_DATA[currentLang].placeholderPassword}">
-                ${!isLogin ? `<button type="button" id="suggest-password-btn" class="secondary-button small-btn">${I18N_DATA[currentLang].passwordSuggestButton}</button>` : ''}
-                <span class="error-message" id="auth-password-error"></span>
-            </div>
-        `;
+                if (isValid) {
+                    // شبیه‌سازی ارسال موفقیت آمیز
+                    alert(I18N_DATA[currentLang].successMessage);
+                    form.reset();
+                    generateCaptcha(); // تولید مجدد برای ارسال بعدی
+                    
+                    // اگر شماره تلفن وارد شده باشد، مودال تأیید را نمایش بده
+                    if (phoneInput.value.trim() && validatePhoneNumber(phoneInput.value.trim())) {
+                        handleOTPModal(phoneInput.value.trim());
+                    }
+                } else {
+                    alert(I18N_DATA[currentLang].errorMessage);
+                }
+            });
+            
+            // تولید کپچا هنگام بارگذاری و همچنین برای استفاده در i18n
+            generateCaptcha();
+            ArtGalleryApp.updateCaptcha = generateCaptcha;
+        };
         
-        // فیلدهای اضافی برای ثبت نام
-        if (!isLogin) {
-             formContent += `
-                <div class="form-group">
-                    <label for="auth-phone" class="sr-only">${I18N_DATA[currentLang].placeholderPhone}</label>
-                    <input type="tel" id="auth-phone" name="phone" placeholder="${I18N_DATA[currentLang].placeholderPhone}" pattern="09[0-9]{9}">
-                    <span class="error-message" id="auth-phone-error"></span>
-                </div>
-                <p class="help-text">${I18N_DATA[currentLang].registerHelp}</p>
+        // --------------------------------------------------
+        // ۱۱. مودال تأیید تلفن (OTP)
+        // --------------------------------------------------
+        
+        /**
+         * نمایش و مدیریت مودال OTP
+         * @param {string} phoneNumber
+         */
+        const handleOTPModal = (phoneNumber) => {
+            const modal = $('#otp-modal');
+            const phoneDisplay = $('#otp-phone-number');
+            const otpCodeInput = $('#otp-code');
+            const otpVerifyButton = $('#otp-verify-button');
+            const otpCloseButton = $('#otp-close-button');
+            const otpErrorEl = $('#otp-error');
+            const correctCode = '1234'; // کد ثابت برای شبیه‌سازی
+
+            // تنظیم متن و نمایش مودال
+            phoneDisplay.textContent = phoneNumber;
+            modal.querySelector('p').textContent = I18N_DATA[currentLang].otpMessage.replace('[PHONE_NUMBER]', phoneNumber);
+            otpCodeInput.value = '';
+            otpErrorEl.textContent = '';
+            modal.style.display = 'flex';
+            
+            const close = () => {
+                modal.style.display = 'none';
+                otpVerifyButton.removeEventListener('click', verifyHandler);
+            };
+            
+            const verifyHandler = () => {
+                otpErrorEl.textContent = '';
+                if (otpCodeInput.value === correctCode) {
+                    alert('تأیید شماره تلفن موفقیت آمیز بود! (نمایشی)');
+                    close();
+                } else {
+                    otpErrorEl.textContent = 'کد وارد شده اشتباه است.';
+                }
+            };
+
+            otpVerifyButton.addEventListener('click', verifyHandler);
+            otpCloseButton.addEventListener('click', close);
+            // بستن با کلیک بیرون از مودال
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) close();
+            });
+        };
+
+        // --------------------------------------------------
+        // ۱۲. فیلتر و مرتب سازی مقالات (جدید)
+        // --------------------------------------------------
+
+        /**
+         * شبیه‌سازی دریافت داده از API و ذخیره در articlesData
+         */
+        const loadArticlesData = () => {
+             // داده‌های اولیه (باید از index.html استخراج شود، اما برای سادگی، داده‌های شبیه‌سازی شده را در اینجا تعریف می‌کنیم)
+             // در حالت واقعی، این داده‌ها از یک فایل JSON یا API دریافت می‌شوند.
+             articlesData = [
+                { id: 1, category: 'painting', date: new Date('2025-10-15'), views: 2500, element: $('.article-painting') },
+                { id: 2, category: 'architecture', date: new Date('2025-10-20'), views: 1800, element: $('.article-architecture') },
+                { id: 3, category: 'literature', date: new Date('2025-10-25'), views: 1500, element: $('.article-literature') },
+                { id: 4, category: 'calligraphy', date: new Date('2025-08-01'), views: 5000, element: null } // این مقاله در HTML نیست، صرفا برای تست فیلتر
+             ].filter(item => item.element); // فقط آنهایی که در DOM وجود دارند
+
+             // مرتب‌سازی اولیه (جدیدترین)
+             articlesData.sort((a, b) => b.date - a.date);
+        };
+
+        /**
+         * اعمال فیلتر و مرتب سازی بر روی مقالات
+         */
+        const filterArticles = () => {
+            const selectedCategory = $('#category-filter').value;
+            const selectedSort = $('#sort-order').value;
+            const articleList = $('#articles-list');
+
+            // 1. فیلتر کردن
+            const filtered = articlesData.filter(article => {
+                return selectedCategory === 'all' || article.category === selectedCategory;
+            });
+            
+            // 2. مرتب سازی
+            filtered.sort((a, b) => {
+                if (selectedSort === 'newest') {
+                    return b.date - a.date; // جدیدترین به قدیمی‌ترین
+                } else if (selectedSort === 'popular') {
+                    return b.views - a.views; // بیشترین بازدید
+                }
+                return 0;
+            });
+
+            // 3. اعمال تغییرات در DOM (شامل نمایش/پنهان کردن و ترتیب)
+            
+            // ابتدا همه را پنهان می‌کنیم
+            $$('.article-card').forEach(card => card.classList.add('hidden'));
+
+            // DOM را به ترتیب جدید مرتب می‌کنیم
+            const fragment = document.createDocumentFragment();
+            filtered.forEach(article => {
+                article.element.classList.remove('hidden');
+                fragment.appendChild(article.element);
+            });
+            
+            // برای مقالات پنهان، نمایش را مجاز می‌کنیم
+            if (filtered.length > 0) {
+                 articleList.appendChild(fragment);
+            }
+        };
+        
+        /**
+         * مدیریت رویدادهای فیلتر
+         */
+        const handleArticleFiltering = () => {
+            if ($('#category-filter')) {
+                $('#category-filter').addEventListener('change', filterArticles);
+            }
+            if ($('#sort-order')) {
+                $('#sort-order').addEventListener('change', filterArticles);
+            }
+        };
+        
+        // --------------------------------------------------
+        // ۱۳. مدیریت آکاردئون FAQ
+        // --------------------------------------------------
+        
+        /**
+         * منطق آکاردئون برای سوالات متداول
+         */
+        const handleFAQAccordion = () => {
+            $$('.faq-question').forEach(button => {
+                button.addEventListener('click', () => {
+                    const answer = $(button.getAttribute('aria-controls'));
+                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                    
+                    // بستن همه موارد دیگر
+                    $$('.faq-question[aria-expanded="true"]').forEach(openButton => {
+                        if (openButton !== button) {
+                            openButton.setAttribute('aria-expanded', 'false');
+                            $(openButton.getAttribute('aria-controls')).style.maxHeight = '0';
+                        }
+                    });
+
+                    // باز یا بسته کردن مورد فعلی
+                    if (!isExpanded) {
+                        button.setAttribute('aria-expanded', 'true');
+                        answer.style.maxHeight = answer.scrollHeight + 30 + 'px'; // +30 برای padding
+                    } else {
+                        button.setAttribute('aria-expanded', 'false');
+                        answer.style.maxHeight = '0';
+                    }
+                });
+            });
+        };
+
+        // --------------------------------------------------
+        // ۱۴. ثبت نام در خبرنامه
+        // --------------------------------------------------
+        
+        const handleNewsletter = () => {
+            const newsletterForm = $('#newsletter-form');
+            if (!newsletterForm) return;
+            
+            newsletterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const emailInput = $('#newsletter-email');
+                const errorEl = $('#newsletter-email-error');
+                errorEl.textContent = '';
+                
+                if (validateEmail(emailInput.value.trim())) {
+                    // شبیه‌سازی ارسال
+                    alert(`${I18N_DATA[currentLang].successMessage.replace('پیام', 'ایمیل')} ${emailInput.value} با موفقیت در خبرنامه ثبت شد. (نمایشی)`);
+                    newsletterForm.reset();
+                } else {
+                    errorEl.textContent = I18N_DATA[currentLang].errorEmailInvalid;
+                    triggerShakeAnimation(emailInput);
+                }
+            });
+        };
+        
+        // --------------------------------------------------
+        // ۱۵. منوی موبایل (بهبود یافته)
+        // --------------------------------------------------
+
+        const updateMobileMenu = () => {
+            const mobileMenu = $('#mobile-menu');
+            const mainNav = $('#main-nav');
+            
+            // کپی کردن محتوای منوی دسکتاپ به منوی موبایل
+            if (mainNav) {
+                mobileMenu.innerHTML = mainNav.innerHTML; 
+            }
+            
+            // افزودن دکمه‌های ورود و ثبت نام
+            mobileMenu.innerHTML += `
+                <ul>
+                    <li><a href="/login" class="primary-button" style="margin-top: 10px; display: block;" data-lang-key="navLogin">${I18N_DATA[currentLang].navLogin}</a></li>
+                    <li><a href="/register" class="secondary-button" style="margin-top: 10px; display: block;" data-lang-key="navRegister">${I18N_DATA[currentLang].navRegister}</a></li>
+                </ul>
             `;
-        } else {
-            formContent += `<a href="#" class="forgot-password-link">${I18N_DATA[currentLang].forgotPassword}</a>`;
-        }
-
-
-        // ساختار مودال
-        const modal = document.createElement('div');
-        modal.classList.add('modal-backdrop');
-        modal.innerHTML = `
-            <div class="modal-content">
-                <button class="close-modal-btn" aria-label="بستن"><i class="fa-solid fa-xmark"></i></button>
-                <h3 class="modal-title" data-lang-key="${titleKey}">${I18N_DATA[currentLang][titleKey]}</h3>
-                <form id="auth-form" data-type="${type}">
-                    ${formContent}
-                    <button type="submit" class="cta-button full-width">${I18N_DATA[currentLang][buttonKey]}</button>
-                </form>
-            </div>
-        `;
-
-        document.body.appendChild(modal);
-        
-        // مدیریت رویدادها
-        modal.querySelector('.close-modal-btn').addEventListener('click', () => modal.remove());
-        modal.addEventListener('click', (e) => { if (e.target.classList.contains('modal-backdrop')) modal.remove(); });
-        
-        // مدیریت پیشنهاد رمز عبور (فقط در حالت ثبت نام)
-        const suggestPassBtn = $('#suggest-password-btn');
-        if (suggestPassBtn) {
-            suggestPassBtn.addEventListener('click', () => {
-                const newPass = generateStrongPassword();
-                $('#auth-password').value = newPass;
-                navigator.clipboard.writeText(newPass).then(() => {
-                    alert(`${I18N_DATA[currentLang].passwordSuggested} ${newPass}`);
+            
+            // بستن منو پس از کلیک روی لینک‌ها
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('open');
+                    $('#menu-toggle i').className = 'fa-solid fa-bars';
                 });
             });
         }
         
-        // اعتبارسنجی فرم ورود/ثبت نام
-        const authForm = $('#auth-form');
-        authForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (handleAuthSubmit(authForm)) {
-                 modal.remove(); // بستن مودال پس از موفقیت
-            }
-        });
-    };
-    
-    // شبیه‌سازی تأیید تلفن
-    const handlePhoneVerification = (phone) => {
-        const modal = document.createElement('div');
-        modal.classList.add('modal-backdrop');
-        modal.innerHTML = `
-            <div class="modal-content">
-                <button class="close-modal-btn" aria-label="بستن"><i class="fa-solid fa-xmark"></i></button>
-                <h3 class="modal-title">${I18N_DATA[currentLang].verifyPhoneTitle}</h3>
-                <p>${I18N_DATA[currentLang].verifyPhoneCode} ${phone}</p>
-                <form id="verify-form">
-                    <div class="form-group">
-                        <input type="text" id="verify-code" name="code" required placeholder="${I18N_DATA[currentLang].placeholderVerificationCode}" maxlength="4">
-                        <span class="error-message" id="verify-code-error"></span>
-                    </div>
-                    <button type="submit" class="cta-button full-width">${I18N_DATA[currentLang].verifyButton}</button>
-                </form>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        modal.querySelector('.close-modal-btn').addEventListener('click', () => modal.remove());
-        modal.addEventListener('click', (e) => { if (e.target.classList.contains('modal-backdrop')) modal.remove(); });
-        
-        $('#verify-form').addEventListener('submit', (e) => {
-             e.preventDefault();
-             if ($('#verify-code').value === '1234') { // کد ساختگی
-                 alert('✅ تأیید شماره تلفن موفقیت‌آمیز بود!');
-                 modal.remove();
-             } else {
-                 $('#verify-code-error').textContent = 'کد وارد شده صحیح نیست.';
-             }
-        });
-    };
-    
-    // منطق اصلی سابمیت ورود/ثبت نام
-    const handleAuthSubmit = (form) => {
-        const type = form.getAttribute('data-type');
-        const emailInput = $('#auth-email');
-        const passInput = $('#auth-password');
-        const phoneInput = $('#auth-phone');
-        let isValid = true;
-        
-        // اعتبار سنجی ایمیل و رمز
-        if (!validateEmail(emailInput.value)) {
-            $('#auth-email-error').textContent = I18N_DATA[currentLang].errorEmailInvalid;
-            isValid = false;
-        } else {
-            $('#auth-email-error').textContent = '';
-        }
-        if (passInput.value.length < 8) {
-            $('#auth-password-error').textContent = 'گذرواژه باید حداقل ۸ کاراکتر باشد.';
-            isValid = false;
-        } else {
-            $('#auth-password-error').textContent = '';
-        }
-        
-        // اعتبار سنجی تلفن (فقط ثبت نام)
-        if (type === 'register' && phoneInput && phoneInput.value.trim() !== '') {
-            if (!validatePhoneNumber(phoneInput.value)) {
-                $('#auth-phone-error').textContent = I18N_DATA[currentLang].errorPhoneInvalid;
-                isValid = false;
-            } else {
-                 $('#auth-phone-error').textContent = '';
-            }
-        }
-        
-        if (isValid) {
-            if (type === 'login') {
-                alert('✅ ورود موفقیت‌آمیز. (شبیه‌سازی)');
-                return true;
-            } else if (type === 'register') {
-                 if (phoneInput && phoneInput.value.trim() !== '' && validatePhoneNumber(phoneInput.value)) {
-                    // اگر تلفن معتبر بود، مودال تأیید تلفن را نمایش بده
-                    handlePhoneVerification(phoneInput.value);
-                    return true;
-                 } else {
-                    alert('✅ ثبت نام اولیه موفقیت‌آمیز. به پنل کاربری هدایت می‌شوید. (شبیه‌سازی)');
-                    return true;
-                 }
-            }
-        }
-        return false;
-    };
-    
-    // مدیریت کلیک دکمه‌های ورود و ثبت نام
-    loginButton.addEventListener('click', () => createAuthModal('login'));
-    registerButton.addEventListener('click', () => createAuthModal('register'));
-
-    // --------------------------------------------------
-    // ۱۲. اسلایدر پیشرفته (Carousel)
-    // --------------------------------------------------
-    const carouselTrack = $('#featured-slider .carousel-track');
-    const carouselItems = $$('#featured-slider .carousel-item');
-    const carouselPrev = $('#featured-slider .prev-button');
-    const carouselNext = $('#featured-slider .next-button');
-    const dots = $$('#featured-slider .carousel-dot');
-    const totalItems = carouselItems.length;
-    let currentIndex = 0;
-    let autoSlideInterval;
-
-    if (carouselTrack && totalItems > 0) {
-        
-        const updateCarousel = () => {
-            const offset = currentIndex * (carouselItems[0].offsetWidth + 30); // عرض آیتم + فاصله (gap)
-            carouselTrack.style.transform = `translateX(${-offset}px)`;
+        const handleMobileMenu = () => {
+            const menuToggle = $('#menu-toggle');
+            const mobileMenu = $('#mobile-menu');
             
-            // به‌روزرسانی نقطه‌ها
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[currentIndex].classList.add('active');
-        };
-        
-        // تابع اسلاید بعدی
-        const goToNextSlide = () => {
-            currentIndex = (currentIndex + 1) % totalItems;
-            updateCarousel();
-        };
+            updateMobileMenu(); // تنظیم اولیه
 
-        // هندلرهای کلیک
-        carouselNext.addEventListener('click', goToNextSlide);
-        
-        carouselPrev.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
-            updateCarousel();
-        });
-        
-        dots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                currentIndex = parseInt(dot.dataset.index);
-                updateCarousel();
+            menuToggle.addEventListener('click', () => {
+                const isOpen = mobileMenu.classList.toggle('open');
+                menuToggle.querySelector('i').className = isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
             });
-        });
+        };
 
-        // اسلاید خودکار
-        const startAutoSlide = () => {
-            clearInterval(autoSlideInterval);
-            autoSlideInterval = setInterval(goToNextSlide, 8000); // هر ۸ ثانیه
+
+        // --------------------------------------------------
+        // ۱۶. تابع Initialization (شروع کننده)
+        // --------------------------------------------------
+        const init = () => {
+            // ترتیب اهمیت دارد:
+            handleThemeToggle();       // 4. تم
+            handleLangToggle();        // 3. چندزبانگی
+            typeWriterEffect();        // 8. افکت تایپ رایتینگ
+            handleBackToTop();         // 6. نوار پیشرفت و دکمه بالا
+            handleCarousel();          // 7. اسلایدر
+            handleContactForm();       // 10. فرم تماس و کپچا
+            handleNewsletter();        // 14. خبرنامه
+            handleFAQAccordion();      // 13. آکاردئون
+            handleMobileMenu();        // 15. منوی موبایل
+            
+            // بهینه‌سازی و تعاملات
+            loadArticlesData();        // 12. بارگذاری داده‌های اولیه
+            filterArticles();          // 12. اعمال فیلتر اولیه
+            handleArticleFiltering();  // 12. تنظیم رویدادهای فیلتر
+            
+            // عملکرد و UX (باید در انتها اجرا شوند)
+            setupScrollReveal();       // 9. انیمیشن‌های اسکرول
+            lazyLoadImages();          // 5. بارگذاری تنبل تصاویر
+
+            // نمایش سال جاری در فوتر
+            $('#current-year').textContent = new Date().getFullYear().toLocaleString('fa-IR');
+            
+            // پنهان کردن Loader پس از 500 میلی‌ثانیه برای اطمینان از لود شدن اولیه
+            setTimeout(() => {
+                const loader = $('#page-loader');
+                if (loader) {
+                    loader.style.opacity = 0;
+                    setTimeout(() => loader.style.display = 'none', 300);
+                }
+            }, 500);
         };
         
-        // مکث در hover
-        const carouselContainer = $('#featured-slider .carousel-container');
-        if (carouselContainer) {
-            carouselContainer.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
-            carouselContainer.addEventListener('mouseleave', startAutoSlide);
-        }
+        // خروجی توابع کلیدی برای دسترسی بیرونی (در صورت نیاز)
+        return {
+            init: init,
+            updateCarousel: () => {}, // placeholder
+            updateCaptcha: () => {},  // placeholder
+            updateMobileMenu: updateMobileMenu
+        };
         
-        // اطمینان از تنظیم اولیه
-        window.addEventListener('load', updateCarousel); 
-        window.addEventListener('resize', updateCarousel);
-        startAutoSlide(); // شروع اسلاید خودکار
-    }
-    
-    // ----------------------------------------------------
-    // ۱۳. ثبت نام در خبرنامه (Newsletter)
-    // ----------------------------------------------------
-    const newsletterForm = $('#newsletter-form');
-    
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const emailInput = $('#newsletter-email');
-            const errorEl = $('#newsletter-email-error');
-            errorEl.textContent = '';
-            
-            if (validateEmail(emailInput.value)) {
-                // شبیه‌سازی ارسال
-                alert(`${I18N_DATA[currentLang].successMessage.replace('پیام', 'ایمیل')} ${emailInput.value} با موفقیت در خبرنامه ثبت شد. (نمایشی)`);
-                newsletterForm.reset();
-            } else {
-                errorEl.textContent = I18N_DATA[currentLang].errorEmailInvalid;
-            }
-        });
-    }
+    })();
 
-    // ----------------------------------------------------
-    // ۱۴. نمایش سال جاری در فوتر
-    // ----------------------------------------------------
-    $('#current-year').textContent = new Date().getFullYear().toLocaleString('fa-IR');
+    // شروع به کار برنامه
+    ArtGalleryApp.init();
 });
